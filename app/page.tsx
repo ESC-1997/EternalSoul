@@ -159,7 +159,7 @@ export default function Home() {
           <div className="relative overflow-hidden rounded-lg max-w-2xl mx-4 bg-black">
             <div className="relative" style={{ width: '600px', height: '400px' }}>
               <Image
-                src="/images/ES Logo Slide Black.png"
+                src="/images/ES Logo Slide White.png"
                 alt="Eternal Soul Modal Background"
                 fill
                 sizes="(max-width: 768px) 100vw, 600px"
