@@ -123,7 +123,14 @@ export default function Home() {
                 alt="Background"
                 fill
                 sizes="100vw"
-                style={{ objectFit: 'cover' }}
+                style={{ 
+                  objectFit: 'cover',
+                  objectPosition: 'center',
+                  width: '100%',
+                  height: '100%',
+                  maxHeight: '100vh'
+                }}
+                className="md:object-cover object-contain"
                 priority
               />
             </div>
