@@ -122,15 +122,16 @@ export default function Home() {
                 src="/images/ES Slide Purple.png"
                 alt="Background"
                 fill
-                sizes="(max-width: 768px) 100vw, 100vw"
+                sizes="(max-width: 768px) 50vw, 100vw"
                 style={{ 
-                  objectFit: 'cover',
+                  objectFit: 'contain',
                   objectPosition: 'center',
                   width: '100%',
                   height: '100%',
-                  maxHeight: '100vh'
+                  maxHeight: '90vh',
+                  maxWidth: '100%'
                 }}
-                className="md:object-cover object-contain"
+                className="md:object-cover object-contain md:w-full w-auto px-4"
                 priority
               />
             </div>
