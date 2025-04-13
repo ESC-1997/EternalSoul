@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 export default function Home() {
   const [showModal, setShowModal] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [showScrollTop, setShowScrollTop] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -15,10 +16,23 @@ export default function Home() {
     return () => clearTimeout(timer);
   }, []);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 500);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     element?.scrollIntoView({ behavior: 'smooth' });
     setMobileMenuOpen(false); // Close mobile menu after clicking
+  };
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
@@ -27,8 +41,8 @@ export default function Home() {
       <div className="relative z-20 flex flex-col flex-1">
         {/* Header */}
         <header className="p-0 fixed w-full top-0 bg-black/20 backdrop-blur-sm z-20">
-          <div className="max-w-6xl mx-auto flex justify-between items-center p-4">
-            <div className="w-[120px] md:w-[150px]">
+          <div className="max-w-7xl mx-auto flex justify-between items-center p-4">
+            <div className="w-[120px] md:w-[150px] -ml-6 md:-ml-12">
               <button 
                 onClick={() => scrollToSection('home')}
                 className="cursor-pointer"
@@ -38,7 +52,7 @@ export default function Home() {
                   alt="Eternal Soul Logo"
                   width={150}
                   height={50}
-                  className="invert transform -translate-x-2 md:-translate-x-6 -translate-y-2 hover:invert-0 transition-all duration-300"
+                  className="invert transform -translate-y-1 hover:invert-0 transition-all duration-300"
                   priority
                   style={{ width: 'auto', height: 'auto' }}
                 />
@@ -66,12 +80,12 @@ export default function Home() {
             </button>
 
             {/* Desktop Navigation */}
-            <nav className="hidden md:block">
-              <ul className="flex gap-6 text-white">
+            <nav className="hidden md:block mr-12">
+              <ul className="flex gap-12 text-white">
                 <li>
                   <button 
                     onClick={() => scrollToSection('about')} 
-                    className="hover:text-purple-300 transition-colors"
+                    className="hover:text-purple-300 transition-colors text-lg font-medium"
                   >
                     About
                   </button>
@@ -79,7 +93,7 @@ export default function Home() {
                 <li>
                   <button 
                     onClick={() => scrollToSection('contact')} 
-                    className="hover:text-purple-300 transition-colors"
+                    className="hover:text-purple-300 transition-colors text-lg font-medium"
                   >
                     Contact
                   </button>
@@ -116,26 +130,34 @@ export default function Home() {
         {/* Main Content */}
         <main className="flex-1">
           {/* Home Section */}
-          <section id="home" className="min-h-screen flex flex-col justify-center items-center relative pt-16 bg-[#6B21A8]">
+          <section id="home" className="min-h-screen flex flex-col justify-center items-center relative pt-16 bg-[#6B7280]">
             <div className="absolute inset-0 z-0 flex items-center justify-center">
-              <div className="relative w-full md:w-full h-full max-w-4xl mx-auto">
+              <div className="relative w-full md:w-full h-full max-w-5xl mx-auto">
                 <Image
-                  src="/images/ES Slide Purple.png"
+                  src="/images/ES Slide Grey.png"
                   alt="Background"
                   fill
-                  sizes="(max-width: 768px) 90vw, 100vw"
+                  sizes="(max-width: 768px) 100vw, 100vw"
                   style={{ 
                     objectFit: 'contain',
                     objectPosition: 'center',
+                    maxWidth: '100%',
+                    maxHeight: '100%',
+                    scale: '1.2',
                   }}
-                  className="px-4 md:px-0"
+                  className="px-4 md:px-0 transform md:scale-125"
                   priority
                 />
               </div>
             </div>
-            
-            {/* Gradient overlay */}
-            <div className="absolute inset-0 z-10 bg-gradient-to-b from-transparent via-transparent to-[#6B7280]"></div>
+
+            {/* V-shaped divider for grey to purple */}
+            <div className="absolute bottom-0 left-0 right-0 w-full overflow-hidden leading-none">
+              <svg className="relative block w-full h-64" viewBox="0 0 100 100" preserveAspectRatio="none">
+                <path d="M0,0 L0,20 L48,100 L52,100 L100,20 L100,0 Z" fill="#6B7280"/>
+                <path d="M0,20 L48,100 L52,100 L100,20 L100,100 L0,100 Z" fill="#6B21A8"/>
+              </svg>
+            </div>
 
             <div className="relative z-20 max-w-6xl mx-auto p-6">
               <div className="text-center">
@@ -145,22 +167,28 @@ export default function Home() {
           </section>
 
           {/* About Section */}
-          <section id="about" className="min-h-screen bg-[#6B7280] relative">
-            <div className="max-w-4xl mx-auto p-4 md:p-6 pt-24">
-              <h2 className="text-3xl md:text-4xl font-bold text-black mb-8 md:mb-12 text-center">About The Brand</h2>
-              <p className="text-black text-lg md:text-xl italic font-bold leading-relaxed md:leading-[3] text-center">
+          <section id="about" className="min-h-screen bg-[#6B21A8] relative -mt-[1px] flex items-center">
+            <div className="max-w-4xl mx-auto p-4 md:p-6 py-24">
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-8 md:mb-12 text-center">About The Brand</h2>
+              <p className="text-white text-lg md:text-xl italic font-bold leading-relaxed md:leading-[3] text-center">
                 Eternal Soul Clothing is more than just a fashion label—it's a tribute to the enduring energy within each of us. Rooted in the belief that the soul is eternal and ever-transforming, our brand stands as a reminder that even in moments of darkness, there is light that never fades. Every design is crafted to reflect themes of personal growth, healing, and the invisible strength that carries us forward. Eternal Soul is for those who feel deeply, think boldly, and believe that identity is not fixed—but a continuous journey of becoming. Through quality pieces and meaningful art, we aim to spark connection, conversation, and self-expression in the most authentic form.
               </p>
             </div>
-            {/* Gradient transition to contact section */}
-            <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-b from-[#6B7280] to-black"></div>
+
+            {/* V-shaped divider for purple to black */}
+            <div className="absolute bottom-0 left-0 right-0 w-full overflow-hidden leading-none">
+              <svg className="relative block w-full h-64" viewBox="0 0 100 100" preserveAspectRatio="none">
+                <path d="M0,0 L0,20 L48,100 L52,100 L100,20 L100,0 Z" fill="#6B21A8"/>
+                <path d="M0,20 L48,100 L52,100 L100,20 L100,100 L0,100 Z" fill="black"/>
+              </svg>
+            </div>
           </section>
 
           {/* Contact Section */}
-          <section id="contact" className="min-h-screen bg-black">
-            <div className="max-w-2xl mx-auto p-4 md:p-6 pt-24">
+          <section id="contact" className="min-h-screen bg-black relative -mt-[1px] flex items-center">
+            <div className="w-full max-w-4xl mx-auto p-4 md:p-6 py-24">
               <h2 className="text-3xl md:text-4xl font-bold text-white mb-8 md:mb-12 text-center">Contact Us</h2>
-              <form className="space-y-6">
+              <form className="space-y-6 max-w-2xl mx-auto">
                 <div>
                   <input
                     type="text"
@@ -201,18 +229,41 @@ export default function Home() {
         </footer>
       </div>
 
+      {/* Scroll to Top Button */}
+      <button
+        onClick={scrollToTop}
+        className={`fixed bottom-8 right-8 bg-[#6B21A8] text-white p-3 rounded-full shadow-lg transition-all duration-300 hover:bg-purple-700 z-50 ${
+          showScrollTop ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-16'
+        }`}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-6 w-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M5 10l7-7m0 0l7 7m-7-7v18"
+          />
+        </svg>
+      </button>
+
       {/* Coming Soon Modal */}
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div 
-            className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+            className="absolute inset-0 bg-black/70 backdrop-blur-[2px]"
             onClick={() => setShowModal(false)}
           ></div>
           
           <div className="relative overflow-hidden rounded-lg w-full max-w-2xl bg-black">
             <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
               <Image
-                src="/images/ES Logo Slide Teal.png"
+                src="/images/ES Logo Slide Black.png"
                 alt="Eternal Soul Modal Background"
                 fill
                 sizes="(max-width: 768px) 100vw, 600px"
@@ -225,17 +276,17 @@ export default function Home() {
             </div>
 
             <div className="absolute inset-0 flex flex-col items-center justify-center p-6 md:p-12 bg-black/40">
-              <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-4 text-center font-serif [text-shadow:_2px_2px_8px_rgb(0_0_0_/_100%)]">
+              <h2 className="text-4xl md:text-4xl lg:text-5xl font-bold text-white mb-6 md:mb-8 text-center font-serif [text-shadow:_2px_2px_8px_rgb(107_33_168_/_100%)]">
                 Coming Soon
               </h2>
-              <p className="text-white text-xl md:text-2xl lg:text-3xl text-center max-w-md font-sans font-bold [text-shadow:_1px_1px_4px_rgb(0_0_0_/_100%)]">
+              <p className="text-white text-xl md:text-2xl lg:text-2xl text-center max-w-md font-sans font-bold [text-shadow:_1px_1px_4px_rgb(107_33_168_/_100%)]">
                 We're crafting something special for you. In the meantime, feel free to explore our site and learn more about Eternal Soul Clothing.
               </p>
             </div>
 
             <button 
               onClick={() => setShowModal(false)}
-              className="absolute top-2 right-2 md:top-4 md:right-4 text-white hover:text-black transition-all bg-black/60 hover:bg-white p-1.5 md:p-2 rounded-lg shadow-lg border-2 border-white/50 hover:border-white"
+              className="absolute top-2 right-2 md:top-4 md:right-4 text-white hover:text-white transition-all bg-black/60 hover:bg-[#6B21A8] p-1.5 md:p-2 rounded-lg shadow-lg border-2 border-white/50 hover:border-white"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 md:h-6 md:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
