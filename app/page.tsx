@@ -116,26 +116,26 @@ export default function Home() {
         {/* Main Content */}
         <main className="flex-1">
           {/* Home Section */}
-          <section id="home" className="min-h-screen flex flex-col justify-center items-center relative pt-16">
-            <div className="absolute inset-0 z-0">
-              <Image
-                src="/images/ES Slide Purple.png"
-                alt="Background"
-                fill
-                sizes="100vw"
-                style={{ 
-                  objectFit: 'cover',
-                  objectPosition: 'center',
-                  width: '100%',
-                  height: '100%'
-                }}
-                className="brightness-90"
-                priority
-              />
+          <section id="home" className="min-h-screen flex flex-col justify-center items-center relative pt-16 bg-[#6B21A8]">
+            <div className="absolute inset-0 z-0 flex items-center justify-center">
+              <div className="relative w-full md:w-full h-full max-w-4xl mx-auto">
+                <Image
+                  src="/images/ES Slide Purple.png"
+                  alt="Background"
+                  fill
+                  sizes="(max-width: 768px) 90vw, 100vw"
+                  style={{ 
+                    objectFit: 'contain',
+                    objectPosition: 'center',
+                  }}
+                  className="px-4 md:px-0"
+                  priority
+                />
+              </div>
             </div>
             
-            {/* Enhanced gradient overlay for better visual balance */}
-            <div className="absolute inset-0 z-10 bg-gradient-to-b from-black/30 via-[#6B21A8]/60 to-[#6B7280] opacity-80"></div>
+            {/* Gradient overlay */}
+            <div className="absolute inset-0 z-10 bg-gradient-to-b from-transparent via-transparent to-[#6B7280]"></div>
 
             <div className="relative z-20 max-w-6xl mx-auto p-6">
               <div className="text-center">
