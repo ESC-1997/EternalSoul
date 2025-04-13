@@ -122,7 +122,7 @@ export default function Home() {
                 src="/images/ES Slide Purple.png"
                 alt="Background"
                 fill
-                sizes="100vw"
+                sizes="(max-width: 768px) 100vw, 100vw"
                 style={{ 
                   objectFit: 'cover',
                   objectPosition: 'center',
