@@ -122,22 +122,20 @@ export default function Home() {
                 src="/images/ES Slide Purple.png"
                 alt="Background"
                 fill
-                sizes="(max-width: 768px) 50vw, 100vw"
+                sizes="100vw"
                 style={{ 
-                  objectFit: 'contain',
+                  objectFit: 'cover',
                   objectPosition: 'center',
                   width: '100%',
-                  height: '100%',
-                  maxHeight: '90vh',
-                  maxWidth: '100%'
+                  height: '100%'
                 }}
-                className="md:object-cover object-contain md:w-full w-auto px-4"
+                className="brightness-90"
                 priority
               />
             </div>
             
-            {/* Gradient Overlay */}
-            <div className="absolute inset-0 z-10 bg-gradient-to-b from-transparent via-[#6B21A8]/50 from-40% via-70% to-[#6B7280]"></div>
+            {/* Enhanced gradient overlay for better visual balance */}
+            <div className="absolute inset-0 z-10 bg-gradient-to-b from-black/30 via-[#6B21A8]/60 to-[#6B7280] opacity-80"></div>
 
             <div className="relative z-20 max-w-6xl mx-auto p-6">
               <div className="text-center">
