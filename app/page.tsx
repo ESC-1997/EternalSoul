@@ -46,6 +46,7 @@ export default function Home() {
               <button 
                 onClick={() => scrollToSection('home')}
                 className="cursor-pointer"
+                suppressHydrationWarning
               >
                 <Image
                   src="/images/logo.png"
@@ -86,6 +87,7 @@ export default function Home() {
                   <button 
                     onClick={() => scrollToSection('about')} 
                     className="hover:text-purple-300 transition-colors text-lg font-medium"
+                    suppressHydrationWarning
                   >
                     About
                   </button>
@@ -94,6 +96,7 @@ export default function Home() {
                   <button 
                     onClick={() => scrollToSection('contact')} 
                     className="hover:text-purple-300 transition-colors text-lg font-medium"
+                    suppressHydrationWarning
                   >
                     Contact
                   </button>
@@ -130,45 +133,49 @@ export default function Home() {
         {/* Main Content */}
         <main className="flex-1">
           {/* Home Section */}
-          <section id="home" className="min-h-screen flex flex-col justify-center items-center relative pt-16 bg-[#6B7280]">
-            <div className="absolute inset-0 z-0 flex items-center justify-center">
-              <div className="relative w-full md:w-full h-full max-w-5xl mx-auto">
+          <section id="home" className="min-h-screen flex flex-col justify-center items-center relative pt-16 overflow-hidden">
+            <div className="absolute inset-0">
+              <video
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="w-full h-full"
+                style={{ 
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover'
+                }}
+              >
+                <source src="/videos/background2- Trim.mp4" type="video/mp4" />
+                <p>Your browser does not support the video tag.</p>
+              </video>
+            </div>
+            
+            {/* Gradient Overlay */}
+            <div className="absolute inset-0 z-10 bg-gradient-to-b from-transparent via-[#6B21A8]/50 from-40% via-70% to-[#6B21A8]"></div>
+
+            <div className="relative z-20 max-w-6xl mx-auto p-6 h-screen flex items-center justify-center">
+              <div className="text-center -mt-32">
                 <Image
-                  src="/images/ES Slide Grey.png"
-                  alt="Background"
-                  fill
-                  sizes="(max-width: 768px) 100vw, 100vw"
-                  style={{ 
-                    objectFit: 'contain',
-                    objectPosition: 'center',
-                    maxWidth: '100%',
-                    maxHeight: '100%',
-                    scale: '1.2',
-                  }}
-                  className="px-4 md:px-0 transform md:scale-125"
+                  src="/images/eternal_soul_purple.png"
+                  alt="Eternal Soul"
+                  width={800}
+                  height={400}
+                  className="mx-auto w-full max-w-3xl drop-shadow-[0_0_25px_rgba(255,255,255,0.5)] [text-shadow:_0_0_25px_rgba(255,255,255,0.5)] opacity-90"
                   priority
                 />
-              </div>
-            </div>
-
-            {/* V-shaped divider for grey to purple */}
-            <div className="absolute bottom-0 left-0 right-0 w-full overflow-hidden leading-none">
-              <svg className="relative block w-full h-64" viewBox="0 0 100 100" preserveAspectRatio="none">
-                <path d="M0,0 L0,20 L48,100 L52,100 L100,20 L100,0 Z" fill="#6B7280"/>
-                <path d="M0,20 L48,100 L52,100 L100,20 L100,100 L0,100 Z" fill="#6B21A8"/>
-              </svg>
-            </div>
-
-            <div className="relative z-20 max-w-6xl mx-auto p-6">
-              <div className="text-center">
-            
               </div>
             </div>
           </section>
 
           {/* About Section */}
           <section id="about" className="min-h-screen bg-[#6B21A8] relative -mt-[1px] flex items-center">
-            <div className="max-w-4xl mx-auto p-4 md:p-6 py-24">
+            <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-transparent to-[#6B21A8]"></div>
+            <div className="max-w-4xl mx-auto p-4 md:p-6 py-24 relative z-10">
               <h2 className="text-3xl md:text-4xl font-bold text-white mb-8 md:mb-12 text-center">About The Brand</h2>
               <p className="text-white text-lg md:text-xl italic font-bold leading-relaxed md:leading-[3] text-center">
                 Eternal Soul Clothing is more than just a fashion label—it's a tribute to the enduring energy within each of us. Rooted in the belief that the soul is eternal and ever-transforming, our brand stands as a reminder that even in moments of darkness, there is light that never fades. Every design is crafted to reflect themes of personal growth, healing, and the invisible strength that carries us forward. Eternal Soul is for those who feel deeply, think boldly, and believe that identity is not fixed—but a continuous journey of becoming. Through quality pieces and meaningful art, we aim to spark connection, conversation, and self-expression in the most authentic form.
@@ -194,6 +201,7 @@ export default function Home() {
                     type="text"
                     placeholder="Name"
                     className="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:border-purple-500 transition-colors"
+                    suppressHydrationWarning
                   />
                 </div>
                 <div>
@@ -201,6 +209,7 @@ export default function Home() {
                     type="email"
                     placeholder="Email"
                     className="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:border-purple-500 transition-colors"
+                    suppressHydrationWarning
                   />
                 </div>
                 <div>
@@ -213,6 +222,7 @@ export default function Home() {
                 <button
                   type="submit"
                   className="w-full py-3 px-6 rounded-lg bg-purple-600 text-white font-semibold hover:bg-purple-700 transition-colors"
+                  suppressHydrationWarning
                 >
                   Send Message
                 </button>
@@ -256,30 +266,20 @@ export default function Home() {
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div 
-            className="absolute inset-0 bg-black/70 backdrop-blur-[2px]"
+            className="absolute inset-0 bg-black/30 backdrop-blur-[2px]"
             onClick={() => setShowModal(false)}
           ></div>
           
-          <div className="relative overflow-hidden rounded-lg w-full max-w-2xl bg-black">
+          <div className="relative overflow-hidden rounded-lg w-full max-w-2xl bg-transparent">
             <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
-              <Image
-                src="/images/ES Logo Slide Black.png"
-                alt="Eternal Soul Modal Background"
-                fill
-                sizes="(max-width: 768px) 100vw, 600px"
-                style={{ 
-                  objectFit: 'contain',
-                }}
-                priority
-                quality={100}
-              />
+              <div className="absolute inset-0 bg-black/60"></div>
             </div>
 
-            <div className="absolute inset-0 flex flex-col items-center justify-center p-6 md:p-12 bg-black/40">
-              <h2 className="text-4xl md:text-4xl lg:text-5xl font-bold text-white mb-6 md:mb-8 text-center font-serif [text-shadow:_2px_2px_8px_rgb(107_33_168_/_100%)]">
+            <div className="absolute inset-0 flex flex-col items-center justify-center p-6 md:p-12">
+              <h2 className="text-4xl md:text-4xl lg:text-5xl font-bold text-white mb-6 md:mb-8 text-center font-serif [text-shadow:_0_0_15px_rgb(107_33_168_/_100%)]">
                 Coming Soon
               </h2>
-              <p className="text-white text-xl md:text-2xl lg:text-2xl text-center max-w-md font-sans font-bold [text-shadow:_1px_1px_4px_rgb(107_33_168_/_100%)]">
+              <p className="text-white text-xl md:text-2xl lg:text-2xl text-center max-w-md font-sans font-bold [text-shadow:_0_0_10px_rgb(107_33_168_/_100%)]">
                 We're crafting something special for you. In the meantime, feel free to explore our site and learn more about Eternal Soul Clothing.
               </p>
             </div>
