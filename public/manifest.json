@@ -3,12 +3,12 @@
   "short_name": "Eternal Soul",
   "icons": [
     {
-      "src": "https://eternalsoul.co/ES Slide Grey.png",
+      "src": "https://eternalsoul.co/images/ES%20Slide%20Grey.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "https://eternalsoul.co/ES Slide Grey.png",
+      "src": "https://eternalsoul.co/images/ES%20Slide%20Grey.png",
       "sizes": "512x512",
       "type": "image/png"
     }
