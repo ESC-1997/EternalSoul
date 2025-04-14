@@ -140,7 +140,7 @@ export default function Home() {
                 loop
                 muted
                 playsInline
-                className="w-full h-full"
+                className="w-full h-full md:left-0 left-[10%]"
                 style={{ 
                   position: 'absolute',
                   top: 0,
@@ -165,7 +165,7 @@ export default function Home() {
                   alt="Eternal Soul"
                   width={800}
                   height={400}
-                  className="mx-auto w-full max-w-3xl drop-shadow-[0_0_25px_rgba(0,0,0,0.5)] [text-shadow:_0_0_25px_rgba(0,0,0,0.5)] opacity-90"
+                  className="mx-auto w-full max-w-3xl drop-shadow-[0_0_25px_rgba(0,0,0,0.5)] [text-shadow:_0_0_25px_rgba(0,0,0,0.5)] opacity-100"
                   priority
                 />
               </div>
