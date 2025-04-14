@@ -11,12 +11,12 @@ export const metadata: Metadata = {
     title: 'Eternal Soul Clothing',
     description: 'Eternal Soul Clothing - A tribute to the enduring energy within each of us',
     siteName: 'Eternal Soul Clothing',
-    images: [{
+    images: {
       url: '/images/ES Slide Grey.png',
       width: 800,
       height: 800,
       alt: 'Eternal Soul Clothing'
-    }]
+    }
   },
   icons: {
     icon: '/images/ES Slide Grey.png',
