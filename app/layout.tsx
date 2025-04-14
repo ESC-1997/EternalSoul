@@ -19,9 +19,9 @@ export const metadata: Metadata = {
     }]
   },
   icons: {
-    icon: '/images/Logo2_Teal.png',
-    shortcut: '/images/Logo2_Teal.png',
-    apple: '/images/Logo2_Teal.png',
+    icon: '/ES Slide Grey.png',
+    shortcut: '/ES Slide Grey.png',
+    apple: '/ES Slide Grey.png',
   }
 }
 
@@ -33,8 +33,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="icon" href="/images/Logo2_Teal.png" />
-        <link rel="apple-touch-icon" href="/images/Logo2_Teal.png" />
+        <link rel="icon" href="/ES Slide Grey.png" />
+        <link rel="apple-touch-icon" href="/ES Slide Grey.png" />
         <link rel="manifest" href="/manifest.json" />
         <meta property="og:image" content="/ES Slide Grey.png" />
         <meta property="og:image:width" content="800" />
