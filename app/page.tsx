@@ -150,7 +150,7 @@ export default function Home() {
                   objectFit: 'cover'
                 }}
               >
-                <source src="/videos/background2- Trim.mp4" type="video/mp4" />
+                <source src="/background_official.mp4" type="video/mp4" />
                 <p>Your browser does not support the video tag.</p>
               </video>
             </div>
@@ -161,11 +161,11 @@ export default function Home() {
             <div className="relative z-20 max-w-6xl mx-auto p-6 h-screen flex items-center justify-center">
               <div className="text-center -mt-32">
                 <Image
-                  src="/images/eternal_soul_purple.png"
+                  src="/Eternal Soul Elegant.png"
                   alt="Eternal Soul"
                   width={800}
                   height={400}
-                  className="mx-auto w-full max-w-3xl drop-shadow-[0_0_25px_rgba(255,255,255,0.5)] [text-shadow:_0_0_25px_rgba(255,255,255,0.5)] opacity-90"
+                  className="mx-auto w-full max-w-3xl drop-shadow-[0_0_25px_rgba(0,0,0,0.5)] [text-shadow:_0_0_25px_rgba(0,0,0,0.5)] opacity-90"
                   priority
                 />
               </div>
