@@ -11,7 +11,22 @@ export const metadata: Metadata = {
     title: 'Eternal Soul Clothing',
     description: 'Eternal Soul Clothing - A tribute to the enduring energy within each of us',
     siteName: 'Eternal Soul Clothing',
-    images: '/images/ES Slide Grey.png'
+    url: 'https://eternalsoul.co',
+    images: [
+      {
+        url: 'https://eternalsoul.co/images/ES Slide Grey.png',
+        width: 1200,
+        height: 630,
+        alt: 'Eternal Soul Clothing Logo'
+      }
+    ]
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Eternal Soul Clothing',
+    description: 'Eternal Soul Clothing - A tribute to the enduring energy within each of us',
+    images: ['https://eternalsoul.co/images/ES Slide Grey.png'],
+    creator: '@eternalsoulco'
   },
   icons: {
     icon: '/images/ES Slide Grey.png',
