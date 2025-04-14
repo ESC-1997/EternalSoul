@@ -140,7 +140,7 @@ export default function Home() {
                 loop
                 muted
                 playsInline
-                className="w-full h-full md:left-0 left-[10%]"
+                className="w-full h-full translate-x-[25%] md:translate-x-0"
                 style={{ 
                   position: 'absolute',
                   top: 0,
