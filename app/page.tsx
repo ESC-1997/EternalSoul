@@ -134,18 +134,17 @@ export default function Home() {
         <main className="flex-1">
           {/* Home Section */}
           <section id="home" className="min-h-screen flex flex-col justify-center items-center relative pt-16 overflow-hidden">
-            <div className="absolute inset-0">
+            <div className="absolute inset-0 overflow-hidden">
               <video
                 autoPlay
                 loop
                 muted
                 playsInline
-                className="w-full h-full translate-x-[25%] md:translate-x-0"
+                className="w-[120%] h-full translate-x-[15%] md:translate-x-0 md:w-full"
                 style={{ 
                   position: 'absolute',
                   top: 0,
                   left: 0,
-                  width: '100%',
                   height: '100%',
                   objectFit: 'cover'
                 }}
