@@ -2,11 +2,12 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 export default function CollectionsPage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [showModal, setShowModal] = useState(true);
+  // Modal is always shown and can't be closed
+  const showModal = true;
 
   return (
     <div className="min-h-screen flex">
