@@ -2,10 +2,20 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-export default function HomePage() {
-  const [isMenuOpen, setIsMenuOpen] = useState(true);
+export default function Home() {
+  const [showModal, setShowModal] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  // Show modal after 2 seconds
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowModal(true);
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <div className="min-h-screen flex">
@@ -45,7 +55,7 @@ export default function HomePage() {
           {/* Navigation Links */}
           <div className="flex flex-col gap-6 mt-4">
             <Link 
-              href="/#about"
+              href="/about"
               className="flex items-center gap-3 text-white p-3 hover:bg-white/10 rounded-lg transition-colors"
             >
               <Image
@@ -59,7 +69,7 @@ export default function HomePage() {
             </Link>
 
             <Link 
-              href="/#contact"
+              href="/contact"
               className="flex items-center gap-3 text-white p-3 hover:bg-white/10 rounded-lg transition-colors"
             >
               <Image
@@ -72,7 +82,8 @@ export default function HomePage() {
               {isMenuOpen && <span>Contact Us</span>}
             </Link>
 
-            <button 
+            <Link 
+              href="/collections"
               className="flex items-center gap-3 text-white p-3 hover:bg-white/10 rounded-lg transition-colors"
             >
               <Image
@@ -83,29 +94,21 @@ export default function HomePage() {
                 className="invert brightness-0"
               />
               {isMenuOpen && <span>Collections</span>}
-            </button>
+            </Link>
           </div>
         </div>
       </div>
 
       {/* Main Content */}
       <div className={`flex-1 transition-all duration-300 ${isMenuOpen ? 'ml-64' : 'ml-20'}`}>
-        <section className="min-h-screen flex flex-col justify-center items-center relative pt-16 overflow-hidden">
+        <div className="min-h-screen flex flex-col justify-center items-center relative overflow-hidden">
           <div className="absolute inset-0">
             <video
               autoPlay
               loop
               muted
               playsInline
-              className="w-full h-full"
-              style={{ 
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover'
-              }}
+              className="w-full h-full object-cover"
             >
               <source src="/background_official.mp4" type="video/mp4" />
               <p>Your browser does not support the video tag.</p>
@@ -115,8 +118,8 @@ export default function HomePage() {
           {/* Gradient Overlay */}
           <div className="absolute inset-0 z-10 bg-gradient-to-b from-transparent via-[#6B21A8]/50 from-40% via-70% to-[#6B21A8]"></div>
 
-          <div className="relative z-20 max-w-6xl mx-auto p-6 h-screen flex items-center justify-center">
-            <div className="text-center -mt-32">
+          <div className="relative z-20 max-w-6xl mx-auto p-6 flex items-center justify-center">
+            <div className="text-center">
               <Image
                 src="/Eternal Soul Elegant.png"
                 alt="Eternal Soul"
@@ -127,8 +130,42 @@ export default function HomePage() {
               />
             </div>
           </div>
-        </section>
+        </div>
       </div>
+
+      {/* Coming Soon Modal */}
+      {showModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div 
+            className="absolute inset-0 bg-black/30 backdrop-blur-[2px]"
+            onClick={() => setShowModal(false)}
+          ></div>
+          
+          <div className="relative overflow-hidden rounded-lg w-full max-w-2xl bg-transparent">
+            <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
+              <div className="absolute inset-0 bg-black/60"></div>
+            </div>
+
+            <div className="absolute inset-0 flex flex-col items-center justify-center p-6 md:p-12">
+              <h2 className="text-4xl md:text-4xl lg:text-5xl font-bold text-white mb-6 md:mb-8 text-center font-serif [text-shadow:_0_0_15px_rgb(107_33_168_/_100%)]">
+                Coming Soon
+              </h2>
+              <p className="text-white text-xl md:text-2xl lg:text-2xl text-center max-w-md font-sans font-bold [text-shadow:_0_0_10px_rgb(107_33_168_/_100%)]">
+                We&apos;re crafting something special for you. In the meantime, feel free to explore our site and learn more about Eternal Soul Clothing.
+              </p>
+            </div>
+
+            <button 
+              onClick={() => setShowModal(false)}
+              className="absolute top-2 right-2 md:top-4 md:right-4 text-white hover:text-white transition-all bg-black/60 hover:bg-[#6B21A8] p-1.5 md:p-2 rounded-lg shadow-lg border-2 border-white/50 hover:border-white"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 md:h-6 md:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
-} 
+}
