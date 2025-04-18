@@ -227,7 +227,7 @@ export default function ProfilePage() {
       <div className={`flex-1 transition-all duration-300 ${
         isMenuOpen ? 'ml-20' : 'ml-0 sm:ml-20'
       }`}>
-        <div className={`min-h-screen bg-white ${showModal ? 'blur-sm' : ''}`}>
+        <div className={`min-h-screen bg-white ${showModal ? 'blur-sm' : ''} overflow-y-auto`}>
           {/* Sub Navigation */}
           <div className="sticky top-0 bg-white border-b border-gray-200 z-10">
             <div className="max-w-4xl mx-auto px-2 sm:px-4 py-2 sm:py-4">
@@ -269,7 +269,7 @@ export default function ProfilePage() {
           </div>
 
           {/* Content Sections */}
-          <div className="max-w-4xl mx-auto px-2 sm:px-4 py-4 sm:py-8">
+          <div className="max-w-4xl mx-auto px-2 sm:px-4 py-4 sm:py-8 pb-20">
             {/* Name Section */}
             <section id="name" className="mb-8 sm:mb-16">
               <div className="flex items-center justify-between gap-2 mb-4 sm:mb-6">
@@ -554,7 +554,7 @@ export default function ProfilePage() {
 
         {/* Desktop Modal */}
         {showModal && !isMobile && (
-          <div className="fixed inset-0 z-40 flex items-center justify-center p-4 sm:p-8">
+          <div className="fixed inset-0 z-40 flex items-center justify-center p-4 sm:p-8 overflow-y-auto">
             <div 
               className="absolute inset-0 bg-black/30 backdrop-blur-sm" 
               onClick={() => setShowModal(false)}
@@ -599,12 +599,12 @@ export default function ProfilePage() {
 
         {/* Mobile Modal */}
         {showModal && isMobile && (
-          <div className="fixed inset-0 z-40 flex items-center justify-center">
+          <div className="fixed inset-0 z-40 flex items-center justify-center overflow-y-auto">
             <div 
               className="absolute inset-0 bg-black/30 backdrop-blur-sm" 
               onClick={() => setShowModal(false)}
             ></div>
-            <div className="relative w-full h-full max-w-md max-h-[80vh] mx-auto bg-white">
+            <div className="relative w-full h-full max-w-md max-h-[80vh] mx-auto my-auto bg-white">
               <div className="relative w-full h-full">
                 <img
                   src={modalPage === 1 ? "/images/Mobile_Modal1.svg" : "/images/Mobile_Modal2.svg"}
