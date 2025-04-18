@@ -76,7 +76,7 @@ export default function CollectionsPage() {
               className="flex flex-col items-center gap-1 text-white p-3 hover:bg-white/10 rounded-lg transition-colors"
             >
               <Image
-                src="/images/profile.png"
+                src="/images/Profile.png"
                 alt="Profile"
                 width={24}
                 height={24}
