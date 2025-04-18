@@ -66,10 +66,12 @@ export default function ProfilePage() {
     }
   }, []);
 
-  // Add window resize listener
+  // Update window resize listener to handle both portrait and landscape
   useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(window.innerWidth < 640); // 640px is the sm breakpoint in Tailwind
+      // Check if either width or height is below tablet breakpoint
+      const isMobileSize = window.innerWidth < 640 || window.innerHeight < 640;
+      setIsMobile(isMobileSize);
     };
 
     // Check initially
@@ -602,12 +604,12 @@ export default function ProfilePage() {
               className="absolute inset-0 bg-black/30 backdrop-blur-sm" 
               onClick={() => setShowModal(false)}
             ></div>
-            <div className="relative w-full h-full bg-white">
+            <div className="relative w-full h-full max-w-md max-h-[80vh] mx-auto bg-white">
               <div className="relative w-full h-full">
                 <img
                   src={modalPage === 1 ? "/images/Mobile_Modal1.svg" : "/images/Mobile_Modal2.svg"}
                   alt={modalPage === 1 ? "Mobile Preferences Modal" : "Mobile Shipping Modal"}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-contain"
                   key={modalPage}
                 />
               </div>
