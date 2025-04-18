@@ -18,6 +18,10 @@ export default function ProfilePage() {
   const [hasCompletedProfile, setHasCompletedProfile] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const sections = useRef<{ [key: string]: IntersectionObserverEntry }>({});
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [shirtSize, setShirtSize] = useState('m');
+  const [saveStatus, setSaveStatus] = useState<{[key: string]: string}>({});
 
   // Track shipping address input
   const [shippingAddress, setShippingAddress] = useState({
@@ -30,6 +34,64 @@ export default function ProfilePage() {
 
   // Track payment card input
   const [hasPaymentCard, setHasPaymentCard] = useState(false);
+
+  // Load saved data on component mount
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const savedData = localStorage.getItem('profileData');
+      if (savedData) {
+        const data = JSON.parse(savedData);
+        setFirstName(data.firstName || '');
+        setLastName(data.lastName || '');
+        setEmail(data.email || '');
+        setPhoneNumber(data.phoneNumber || '');
+        setEmailNotifications(data.emailNotifications || false);
+        setSmsNotifications(data.smsNotifications || false);
+        setShirtSize(data.shirtSize || 'm');
+        setShippingAddress(data.shippingAddress || {
+          street: '',
+          city: '',
+          state: '',
+          zip: '',
+          country: ''
+        });
+        
+        // Validate loaded data
+        if (data.email) setIsEmailValid(validateEmail(data.email));
+        if (data.phoneNumber) setIsPhoneValid(data.phoneNumber.replace(/\D/g, '').length === 10);
+      }
+    }
+  }, []);
+
+  // Save section data
+  const saveSection = (section: string) => {
+    const profileData = {
+      firstName,
+      lastName,
+      email,
+      phoneNumber,
+      emailNotifications,
+      smsNotifications,
+      shirtSize,
+      shippingAddress
+    };
+    
+    localStorage.setItem('profileData', JSON.stringify(profileData));
+    
+    // Show save status
+    setSaveStatus(prev => ({
+      ...prev,
+      [section]: 'Saved!'
+    }));
+    
+    // Clear save status after 2 seconds
+    setTimeout(() => {
+      setSaveStatus(prev => ({
+        ...prev,
+        [section]: ''
+      }));
+    }, 2000);
+  };
 
   const formatPhoneNumber = (value: string) => {
     // Remove all non-digit characters
@@ -193,32 +255,47 @@ export default function ProfilePage() {
           <div className="max-w-4xl mx-auto px-2 sm:px-4 py-4 sm:py-8">
             {/* Name Section */}
             <section id="name" className="mb-8 sm:mb-16">
-              <div className="flex items-center gap-2 mb-4 sm:mb-6">
-                <h2 className="text-xl sm:text-2xl font-bold text-black">Name</h2>
-                <Image
-                  src="/images/ID.png"
-                  alt="ID"
-                  width={24}
-                  height={24}
-                  className=""
-                  priority
-                />
+              <div className="flex items-center justify-between gap-2 mb-4 sm:mb-6">
+                <div className="flex items-center gap-2">
+                  <h2 className="text-xl sm:text-2xl font-bold text-black">Name</h2>
+                  <Image
+                    src="/images/ID.png"
+                    alt="ID"
+                    width={24}
+                    height={24}
+                    className=""
+                    priority
+                  />
+                </div>
+                <div className="flex items-center gap-2">
+                  {saveStatus.name && (
+                    <span className="text-green-500 text-sm animate-fade-out">{saveStatus.name}</span>
+                  )}
+                  <button
+                    onClick={() => saveSection('name')}
+                    className="px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors text-sm"
+                  >
+                    Save
+                  </button>
+                </div>
               </div>
               <div className="space-y-3 sm:space-y-4">
                 <div>
                   <input
                     type="text"
                     placeholder="First Name"
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
                     className="w-full p-2 sm:p-3 rounded-lg bg-gray-100 border border-gray-200 text-black placeholder-gray-500 focus:outline-none focus:border-black transition-colors text-sm sm:text-base"
-                    suppressHydrationWarning
                   />
                 </div>
                 <div>
                   <input
                     type="text"
                     placeholder="Last Name"
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
                     className="w-full p-2 sm:p-3 rounded-lg bg-gray-100 border border-gray-200 text-black placeholder-gray-500 focus:outline-none focus:border-black transition-colors text-sm sm:text-base"
-                    suppressHydrationWarning
                   />
                 </div>
               </div>
@@ -226,16 +303,29 @@ export default function ProfilePage() {
 
             {/* Preferences Section */}
             <section id="preferences" className="mb-8 sm:mb-16">
-              <div className="flex items-center gap-2 mb-4 sm:mb-6">
-                <h2 className="text-xl sm:text-2xl font-bold text-black">Preferences</h2>
-                <Image
-                  src="/images/Preferences.png"
-                  alt="Preferences"
-                  width={24}
-                  height={24}
-                  className=""
-                  priority
-                />
+              <div className="flex items-center justify-between gap-2 mb-4 sm:mb-6">
+                <div className="flex items-center gap-2">
+                  <h2 className="text-xl sm:text-2xl font-bold text-black">Preferences</h2>
+                  <Image
+                    src="/images/Preferences.png"
+                    alt="Preferences"
+                    width={24}
+                    height={24}
+                    className=""
+                    priority
+                  />
+                </div>
+                <div className="flex items-center gap-2">
+                  {saveStatus.preferences && (
+                    <span className="text-green-500 text-sm animate-fade-out">{saveStatus.preferences}</span>
+                  )}
+                  <button
+                    onClick={() => saveSection('preferences')}
+                    className="px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors text-sm"
+                  >
+                    Save
+                  </button>
+                </div>
               </div>
               <div className="space-y-3 sm:space-y-4">
                 <div className="flex items-center justify-between p-3 sm:p-4 bg-gray-100 rounded-lg">
@@ -246,7 +336,6 @@ export default function ProfilePage() {
                       className="sr-only peer" 
                       checked={emailNotifications}
                       onChange={(e) => setEmailNotifications(e.target.checked)}
-                      suppressHydrationWarning 
                     />
                     <div className="w-9 h-5 sm:w-11 sm:h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-black/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 sm:after:h-5 sm:after:w-5 after:transition-all peer-checked:bg-black"></div>
                   </label>
@@ -265,29 +354,15 @@ export default function ProfilePage() {
                               ? 'bg-white border-green-500 focus:border-green-500 shadow-[0_0_0_1px_rgba(34,197,94,0.2)]' 
                               : 'bg-gray-100 border-gray-200 focus:border-black'
                           }`}
-                          suppressHydrationWarning
                         />
                         {isEmailValid && (
-                          <div className="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 text-green-500 animate-fade-in">
+                          <div className="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 text-green-500">
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 sm:h-5 sm:w-5" viewBox="0 0 20 20" fill="currentColor">
                               <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                             </svg>
                           </div>
                         )}
                       </div>
-                      {isEmailValid && (
-                        <button 
-                          onClick={() => {
-                            setEmail('');
-                            setIsEmailValid(false);
-                          }}
-                          className="text-red-500 hover:text-red-600 transition-colors p-1.5 sm:p-2 hover:bg-red-50 rounded-lg"
-                        >
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 sm:h-5 sm:w-5" viewBox="0 0 20 20" fill="currentColor">
-                            <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
-                          </svg>
-                        </button>
-                      )}
                     </div>
                     {email && !isEmailValid && (
                       <p className="text-xs sm:text-sm text-red-500 mt-1">Please enter a valid email address</p>
@@ -302,7 +377,6 @@ export default function ProfilePage() {
                       className="sr-only peer" 
                       checked={smsNotifications}
                       onChange={(e) => setSmsNotifications(e.target.checked)}
-                      suppressHydrationWarning 
                     />
                     <div className="w-9 h-5 sm:w-11 sm:h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-black/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 sm:after:h-5 sm:after:w-5 after:transition-all peer-checked:bg-black"></div>
                   </label>
@@ -323,29 +397,15 @@ export default function ProfilePage() {
                               ? 'bg-white border-green-500 focus:border-green-500 shadow-[0_0_0_1px_rgba(34,197,94,0.2)]' 
                               : 'bg-gray-100 border-gray-200 focus:border-black'
                           }`}
-                          suppressHydrationWarning
                         />
                         {isPhoneValid && (
-                          <div className="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 text-green-500 animate-fade-in">
+                          <div className="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 text-green-500">
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 sm:h-5 sm:w-5" viewBox="0 0 20 20" fill="currentColor">
                               <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                             </svg>
                           </div>
                         )}
                       </div>
-                      {isPhoneValid && (
-                        <button 
-                          onClick={() => {
-                            setPhoneNumber('');
-                            setIsPhoneValid(false);
-                          }}
-                          className="text-red-500 hover:text-red-600 transition-colors p-1.5 sm:p-2 hover:bg-red-50 rounded-lg"
-                        >
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 sm:h-5 sm:w-5" viewBox="0 0 20 20" fill="currentColor">
-                            <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
-                          </svg>
-                        </button>
-                      )}
                     </div>
                     {phoneNumber && !isPhoneValid && (
                       <p className="text-xs sm:text-sm text-red-500 mt-1">Please enter a complete phone number</p>
@@ -354,7 +414,11 @@ export default function ProfilePage() {
                 )}
                 <div className="flex items-center justify-between p-3 sm:p-4 bg-gray-100 rounded-lg">
                   <span className="text-sm sm:text-base text-black">Shirt Size</span>
-                  <select className="bg-white border border-gray-300 rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 text-black focus:outline-none focus:border-black text-sm sm:text-base" suppressHydrationWarning>
+                  <select 
+                    className="bg-white border border-gray-300 rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 text-black focus:outline-none focus:border-black text-sm sm:text-base"
+                    value={shirtSize}
+                    onChange={(e) => setShirtSize(e.target.value)}
+                  >
                     <option value="xs">XS</option>
                     <option value="s">S</option>
                     <option value="m">M</option>
@@ -369,62 +433,70 @@ export default function ProfilePage() {
 
             {/* Shipping Address Section */}
             <section id="shipping" className="mb-8 sm:mb-16">
-              <div className="flex items-center gap-2 mb-4 sm:mb-6">
-                <h2 className="text-xl sm:text-2xl font-bold text-black">Shipping Address</h2>
-                <Image
-                  src="/images/Shipping.png"
-                  alt="Shipping"
-                  width={24}
-                  height={24}
-                  className=""
-                  priority
-                />
+              <div className="flex items-center justify-between gap-2 mb-4 sm:mb-6">
+                <div className="flex items-center gap-2">
+                  <h2 className="text-xl sm:text-2xl font-bold text-black">Shipping Address</h2>
+                  <Image
+                    src="/images/Shipping.png"
+                    alt="Shipping"
+                    width={24}
+                    height={24}
+                    className=""
+                    priority
+                  />
+                </div>
+                <div className="flex items-center gap-2">
+                  {saveStatus.shipping && (
+                    <span className="text-green-500 text-sm animate-fade-out">{saveStatus.shipping}</span>
+                  )}
+                  <button
+                    onClick={() => saveSection('shipping')}
+                    className="px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors text-sm"
+                  >
+                    Save
+                  </button>
+                </div>
               </div>
               <div className="space-y-3 sm:space-y-4">
                 <div>
                   <input
                     type="text"
                     placeholder="Street Address"
-                    className="w-full p-2 sm:p-3 rounded-lg bg-gray-100 border border-gray-200 text-black placeholder-gray-500 focus:outline-none focus:border-black transition-colors text-sm sm:text-base"
                     value={shippingAddress.street}
                     onChange={(e) => handleShippingAddressChange('street', e.target.value)}
-                    suppressHydrationWarning
+                    className="w-full p-2 sm:p-3 rounded-lg bg-gray-100 border border-gray-200 text-black placeholder-gray-500 focus:outline-none focus:border-black transition-colors text-sm sm:text-base"
                   />
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                   <input
                     type="text"
                     placeholder="City"
-                    className="w-full p-2 sm:p-3 rounded-lg bg-gray-100 border border-gray-200 text-black placeholder-gray-500 focus:outline-none focus:border-black transition-colors text-sm sm:text-base"
                     value={shippingAddress.city}
                     onChange={(e) => handleShippingAddressChange('city', e.target.value)}
-                    suppressHydrationWarning
+                    className="w-full p-2 sm:p-3 rounded-lg bg-gray-100 border border-gray-200 text-black placeholder-gray-500 focus:outline-none focus:border-black transition-colors text-sm sm:text-base"
                   />
                   <input
                     type="text"
                     placeholder="State"
-                    className="w-full p-2 sm:p-3 rounded-lg bg-gray-100 border border-gray-200 text-black placeholder-gray-500 focus:outline-none focus:border-black transition-colors text-sm sm:text-base"
                     value={shippingAddress.state}
                     onChange={(e) => handleShippingAddressChange('state', e.target.value)}
-                    suppressHydrationWarning
+                    className="w-full p-2 sm:p-3 rounded-lg bg-gray-100 border border-gray-200 text-black placeholder-gray-500 focus:outline-none focus:border-black transition-colors text-sm sm:text-base"
                   />
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                   <input
                     type="text"
                     placeholder="ZIP Code"
-                    className="w-full p-2 sm:p-3 rounded-lg bg-gray-100 border border-gray-200 text-black placeholder-gray-500 focus:outline-none focus:border-black transition-colors text-sm sm:text-base"
                     value={shippingAddress.zip}
                     onChange={(e) => handleShippingAddressChange('zip', e.target.value)}
-                    suppressHydrationWarning
+                    className="w-full p-2 sm:p-3 rounded-lg bg-gray-100 border border-gray-200 text-black placeholder-gray-500 focus:outline-none focus:border-black transition-colors text-sm sm:text-base"
                   />
                   <input
                     type="text"
                     placeholder="Country"
-                    className="w-full p-2 sm:p-3 rounded-lg bg-gray-100 border border-gray-200 text-black placeholder-gray-500 focus:outline-none focus:border-black transition-colors text-sm sm:text-base"
                     value={shippingAddress.country}
                     onChange={(e) => handleShippingAddressChange('country', e.target.value)}
-                    suppressHydrationWarning
+                    className="w-full p-2 sm:p-3 rounded-lg bg-gray-100 border border-gray-200 text-black placeholder-gray-500 focus:outline-none focus:border-black transition-colors text-sm sm:text-base"
                   />
                 </div>
               </div>
