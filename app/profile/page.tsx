@@ -609,8 +609,7 @@ export default function ProfilePage() {
                 <img
                   src={modalPage === 1 ? "/images/Mobile_Modal1.svg" : "/images/Mobile_Modal2.svg"}
                   alt={modalPage === 1 ? "Mobile Preferences Modal" : "Mobile Shipping Modal"}
-                  className="w-full h-full"
-                  style={{ objectFit: 'cover' }}
+                  className="w-full h-full object-contain"
                   key={modalPage}
                 />
               </div>
