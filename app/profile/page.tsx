@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
+import Navigation from "../components/Navigation";
 
 export default function ProfilePage() {
   const [activeSection, setActiveSection] = useState('name');
@@ -15,6 +16,7 @@ export default function ProfilePage() {
   const [showModal, setShowModal] = useState(true);
   const [modalPage, setModalPage] = useState(1);
   const [hasCompletedProfile, setHasCompletedProfile] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const sections = useRef<{ [key: string]: IntersectionObserverEntry }>({});
 
   // Track shipping address input
@@ -136,77 +138,12 @@ export default function ProfilePage() {
 
   return (
     <div className="min-h-screen flex">
-      {/* Left Navigation Menu */}
-      <div className="fixed left-0 top-0 h-screen w-20 bg-black/50 backdrop-blur-sm">
-        <div className="flex flex-col h-full p-4">
-          {/* Logo */}
-          <div className="mb-2 flex flex-col items-center justify-center">
-            <Link href="/" className="block">
-              <Image
-                src="/images/logo.png"
-                alt="Eternal Soul Logo"
-                width={60}
-                height={60}
-                className="invert transform hover:invert-0 transition-all duration-300"
-                style={{ width: 'auto', height: 'auto' }}
-              />
-            </Link>
-            <span className="text-xs text-white mt-2">Home</span>
-          </div>
-
-          {/* Navigation Links */}
-          <div className="flex flex-col gap-4 mt-4">
-            <Link 
-              href="/about"
-              className="flex flex-col items-center gap-1 text-white p-3 hover:bg-white/10 rounded-lg transition-colors"
-            >
-            <Link 
-              href="/contact"
-              className="flex flex-col items-center gap-1 text-white p-3 hover:bg-white/10 rounded-lg transition-colors"
-            >
-              <Image
-                src="/images/Email.png"
-                alt="Contact"
-                width={24}
-                height={24}
-                className="invert brightness-0"
-              />
-              <span className="text-xs">Contact</span>
-            </Link>
-
-            <Link 
-              href="/collections"
-              className="flex flex-col items-center gap-1 text-white p-3 hover:bg-white/10 rounded-lg transition-colors"
-            >
-              <Image
-                src="/images/T_Shirt.png"
-                alt="Collections"
-                width={24}
-                height={24}
-                className="invert brightness-0"
-              />
-              <span className="text-xs">Collections</span>
-            </Link>
-
-            <Link 
-              href="/profile"
-              className="flex flex-col items-center gap-1 text-white p-3 hover:bg-white/10 rounded-lg transition-colors"
-            >
-              <Image
-                src="/images/Profile.png"
-                alt="Profile"
-                width={24}
-                height={24}
-                className="invert brightness-0"
-              />
-              <span className="text-xs">Profile</span>
-            </Link>
-          </div>
-        </div>
-      </div>
+      <Navigation />
 
       {/* Main Content */}
-      <div className="flex-1 ml-20">
+      <div className={`flex-1 transition-all duration-300 ${
+        isMenuOpen ? 'ml-20' : 'ml-0 sm:ml-20'
+      }`}>
         <div className={`min-h-screen bg-white ${showModal ? 'blur-sm' : ''}`}>
           {/* Sub Navigation */}
           <div className="sticky top-0 bg-white border-b border-gray-200 z-10">
@@ -528,14 +465,14 @@ export default function ProfilePage() {
 
         {/* Modal */}
         {showModal && (
-          <div className="fixed inset-0 z-40 flex items-center justify-center p-8">
+          <div className="fixed inset-0 z-40 flex items-center justify-center p-4 sm:p-8">
             <div 
               className="absolute inset-0 bg-black/30 backdrop-blur-sm" 
               onClick={() => setShowModal(false)}
               suppressHydrationWarning
             ></div>
-            <div className="relative w-full max-w-5xl bg-white rounded-lg overflow-hidden shadow-xl">
-              <div className="relative w-full" style={{ paddingBottom: '50%' }}>
+            <div className="relative w-full max-w-[95vw] sm:max-w-5xl bg-white rounded-lg overflow-hidden shadow-xl">
+              <div className="relative w-full" style={{ paddingBottom: '40%' }}>
                 <img
                   src={modalPage === 1 ? "/images/Preferences_Modal.svg" : "/images/Shipping_Modal.svg"}
                   alt={modalPage === 1 ? "Preferences Modal" : "Shipping Modal"}
@@ -544,15 +481,15 @@ export default function ProfilePage() {
                 />
               </div>
 
-              <div className="absolute bottom-0 left-0 right-0 p-6">
+              <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-6">
                 <div className="flex justify-between items-center">
-                  <div className="flex gap-2">
+                  <div className="flex gap-1.5 sm:gap-2">
                     <div 
-                      className={`w-2 h-2 rounded-full ${modalPage === 1 ? 'bg-black' : 'bg-gray-300'}`}
+                      className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full ${modalPage === 1 ? 'bg-black' : 'bg-gray-300'}`}
                       suppressHydrationWarning
                     ></div>
                     <div 
-                      className={`w-2 h-2 rounded-full ${modalPage === 2 ? 'bg-black' : 'bg-gray-300'}`}
+                      className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full ${modalPage === 2 ? 'bg-black' : 'bg-gray-300'}`}
                       suppressHydrationWarning
                     ></div>
                   </div>
@@ -564,7 +501,7 @@ export default function ProfilePage() {
                         setShowModal(false);
                       }
                     }}
-                    className="px-6 py-3 bg-[#9333EA] text-white rounded-lg font-medium hover:bg-[#6B21A8] transition-colors"
+                    className="px-4 py-2 sm:px-6 sm:py-3 bg-[#9333EA] text-white rounded-lg font-medium hover:bg-[#6B21A8] transition-colors text-sm sm:text-base"
                     suppressHydrationWarning
                   >
                     {modalPage === 1 ? 'Next' : 'Got it'}
