@@ -35,6 +35,9 @@ export default function ProfilePage() {
   // Track payment card input
   const [hasPaymentCard, setHasPaymentCard] = useState(false);
 
+  // Add window resize listener
+  const [isMobile, setIsMobile] = useState(false);
+
   // Load saved data on component mount
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -61,6 +64,22 @@ export default function ProfilePage() {
         if (data.phoneNumber) setIsPhoneValid(data.phoneNumber.replace(/\D/g, '').length === 10);
       }
     }
+  }, []);
+
+  // Add window resize listener
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 640); // 640px is the sm breakpoint in Tailwind
+    };
+
+    // Check initially
+    checkMobile();
+
+    // Add resize listener
+    window.addEventListener('resize', checkMobile);
+
+    // Cleanup
+    return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
   // Save section data
@@ -531,13 +550,12 @@ export default function ProfilePage() {
           </div>
         </div>
 
-        {/* Modal */}
-        {showModal && (
+        {/* Desktop Modal */}
+        {showModal && !isMobile && (
           <div className="fixed inset-0 z-40 flex items-center justify-center p-4 sm:p-8">
             <div 
               className="absolute inset-0 bg-black/30 backdrop-blur-sm" 
               onClick={() => setShowModal(false)}
-              suppressHydrationWarning
             ></div>
             <div className="relative w-full max-w-[95vw] sm:max-w-5xl bg-white rounded-lg overflow-hidden shadow-xl">
               <div className="relative w-full" style={{ paddingBottom: '40%' }}>
@@ -549,16 +567,14 @@ export default function ProfilePage() {
                 />
               </div>
 
-              <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-6">
+              <div className="absolute bottom-0 left-0 right-0 p-6">
                 <div className="flex justify-between items-center">
-                  <div className="flex gap-1.5 sm:gap-2">
+                  <div className="flex gap-2">
                     <div 
-                      className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full ${modalPage === 1 ? 'bg-black' : 'bg-gray-300'}`}
-                      suppressHydrationWarning
+                      className={`w-2 h-2 rounded-full ${modalPage === 1 ? 'bg-black' : 'bg-gray-300'}`}
                     ></div>
                     <div 
-                      className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full ${modalPage === 2 ? 'bg-black' : 'bg-gray-300'}`}
-                      suppressHydrationWarning
+                      className={`w-2 h-2 rounded-full ${modalPage === 2 ? 'bg-black' : 'bg-gray-300'}`}
                     ></div>
                   </div>
                   <button
@@ -569,8 +585,52 @@ export default function ProfilePage() {
                         setShowModal(false);
                       }
                     }}
-                    className="px-4 py-2 sm:px-6 sm:py-3 bg-[#9333EA] text-white rounded-lg font-medium hover:bg-[#6B21A8] transition-colors text-sm sm:text-base"
-                    suppressHydrationWarning
+                    className="px-6 py-3 bg-[#9333EA] text-white rounded-lg font-medium hover:bg-[#6B21A8] transition-colors"
+                  >
+                    {modalPage === 1 ? 'Next' : 'Got it'}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Mobile Modal */}
+        {showModal && isMobile && (
+          <div className="fixed inset-0 z-40 flex items-center justify-center">
+            <div 
+              className="absolute inset-0 bg-black/30 backdrop-blur-sm" 
+              onClick={() => setShowModal(false)}
+            ></div>
+            <div className="relative w-full h-full bg-white">
+              <div className="relative w-full h-full">
+                <img
+                  src={modalPage === 1 ? "/images/Mobile_Modal1.svg" : "/images/Mobile_Modal2.svg"}
+                  alt={modalPage === 1 ? "Mobile Preferences Modal" : "Mobile Shipping Modal"}
+                  className="w-full h-full object-cover"
+                  key={modalPage}
+                />
+              </div>
+
+              <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/50 to-transparent">
+                <div className="flex justify-between items-center">
+                  <div className="flex gap-1.5">
+                    <div 
+                      className={`w-1.5 h-1.5 rounded-full ${modalPage === 1 ? 'bg-white' : 'bg-white/50'}`}
+                    ></div>
+                    <div 
+                      className={`w-1.5 h-1.5 rounded-full ${modalPage === 2 ? 'bg-white' : 'bg-white/50'}`}
+                    ></div>
+                  </div>
+                  <button
+                    onClick={() => {
+                      if (modalPage === 1) {
+                        setModalPage(2);
+                      } else {
+                        setShowModal(false);
+                      }
+                    }}
+                    className="px-4 py-2 bg-[#9333EA] text-white rounded-lg font-medium hover:bg-[#6B21A8] transition-colors text-sm"
                   >
                     {modalPage === 1 ? 'Next' : 'Got it'}
                   </button>
