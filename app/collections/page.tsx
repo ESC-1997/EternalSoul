@@ -70,6 +70,20 @@ export default function CollectionsPage() {
               />
               <span className="text-xs">Collections</span>
             </Link>
+
+            <Link 
+              href="/profile"
+              className="flex flex-col items-center gap-1 text-white p-3 hover:bg-white/10 rounded-lg transition-colors"
+            >
+              <Image
+                src="/images/profile.png"
+                alt="Profile"
+                width={24}
+                height={24}
+                className="invert brightness-0"
+              />
+              <span className="text-xs">Profile</span>
+            </Link>
           </div>
         </div>
       </div>
