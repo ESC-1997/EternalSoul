@@ -12,7 +12,22 @@ export default function ProfilePage() {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [isPhoneValid, setIsPhoneValid] = useState(false);
   const [isEmailValid, setIsEmailValid] = useState(false);
+  const [showModal, setShowModal] = useState(true);
+  const [modalPage, setModalPage] = useState(1);
+  const [hasCompletedProfile, setHasCompletedProfile] = useState(false);
   const sections = useRef<{ [key: string]: IntersectionObserverEntry }>({});
+
+  // Track shipping address input
+  const [shippingAddress, setShippingAddress] = useState({
+    street: '',
+    city: '',
+    state: '',
+    zip: '',
+    country: ''
+  });
+
+  // Track payment card input
+  const [hasPaymentCard, setHasPaymentCard] = useState(false);
 
   const formatPhoneNumber = (value: string) => {
     // Remove all non-digit characters
@@ -83,6 +98,33 @@ export default function ProfilePage() {
       sectionElements.forEach((section) => observer.unobserve(section));
     };
   }, []);
+
+  useEffect(() => {
+    // Check if any profile completion criteria are met
+    const isProfileComplete = 
+      email !== '' || 
+      phoneNumber !== '' || 
+      Object.values(shippingAddress).some(value => value !== '') ||
+      hasPaymentCard;
+
+    if (isProfileComplete) {
+      setHasCompletedProfile(true);
+      setShowModal(false);
+    }
+  }, [email, phoneNumber, shippingAddress, hasPaymentCard]);
+
+  // Update shipping address handler
+  const handleShippingAddressChange = (field: string, value: string) => {
+    setShippingAddress(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+
+  // Update payment card handler
+  const handlePaymentCardAdded = () => {
+    setHasPaymentCard(true);
+  };
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
@@ -175,14 +217,14 @@ export default function ProfilePage() {
 
       {/* Main Content */}
       <div className="flex-1 ml-20">
-        <div className="min-h-screen bg-white">
+        <div className={`min-h-screen bg-white ${showModal ? 'blur-sm' : ''}`}>
           {/* Sub Navigation */}
           <div className="sticky top-0 bg-white border-b border-gray-200 z-10">
-            <div className="max-w-4xl mx-auto px-4 py-4">
-              <div className="flex gap-4 overflow-x-auto">
+            <div className="max-w-4xl mx-auto px-2 sm:px-4 py-2 sm:py-4">
+              <div className="flex gap-2 sm:gap-4 overflow-x-auto">
                 <button
                   onClick={() => scrollToSection('name')}
-                  className={`px-4 py-2 rounded-lg transition-colors ${
+                  className={`px-2 sm:px-4 py-2 rounded-lg transition-colors text-sm sm:text-base ${
                     activeSection === 'name' ? 'bg-black text-white' : 'text-black hover:bg-gray-100'
                   }`}
                   suppressHydrationWarning
@@ -191,7 +233,7 @@ export default function ProfilePage() {
                 </button>
                 <button
                   onClick={() => scrollToSection('preferences')}
-                  className={`px-4 py-2 rounded-lg transition-colors ${
+                  className={`px-2 sm:px-4 py-2 rounded-lg transition-colors text-sm sm:text-base ${
                     activeSection === 'preferences' ? 'bg-black text-white' : 'text-black hover:bg-gray-100'
                   }`}
                   suppressHydrationWarning
@@ -200,47 +242,47 @@ export default function ProfilePage() {
                 </button>
                 <button
                   onClick={() => scrollToSection('shipping')}
-                  className={`px-4 py-2 rounded-lg transition-colors ${
+                  className={`px-2 sm:px-4 py-2 rounded-lg transition-colors text-sm sm:text-base ${
                     activeSection === 'shipping' ? 'bg-black text-white' : 'text-black hover:bg-gray-100'
                   }`}
                   suppressHydrationWarning
                 >
-                  Shipping Address
+                  Shipping
                 </button>
                 <button
                   onClick={() => scrollToSection('payment')}
-                  className={`px-4 py-2 rounded-lg transition-colors ${
+                  className={`px-2 sm:px-4 py-2 rounded-lg transition-colors text-sm sm:text-base ${
                     activeSection === 'payment' ? 'bg-black text-white' : 'text-black hover:bg-gray-100'
                   }`}
                   suppressHydrationWarning
                 >
-                  Payment Methods
+                  Payment
                 </button>
               </div>
             </div>
           </div>
 
           {/* Content Sections */}
-          <div className="max-w-4xl mx-auto px-4 py-8">
+          <div className="max-w-4xl mx-auto px-2 sm:px-4 py-4 sm:py-8">
             {/* Name Section */}
-            <section id="name" className="mb-16">
-              <div className="flex items-center gap-2 mb-6">
-                <h2 className="text-2xl font-bold text-black">Name</h2>
+            <section id="name" className="mb-8 sm:mb-16">
+              <div className="flex items-center gap-2 mb-4 sm:mb-6">
+                <h2 className="text-xl sm:text-2xl font-bold text-black">Name</h2>
                 <Image
                   src="/images/ID.png"
                   alt="ID"
-                  width={32}
-                  height={32}
+                  width={24}
+                  height={24}
                   className=""
                   priority
                 />
               </div>
-              <div className="space-y-4">
+              <div className="space-y-3 sm:space-y-4">
                 <div>
                   <input
                     type="text"
                     placeholder="First Name"
-                    className="w-full p-3 rounded-lg bg-gray-100 border border-gray-200 text-black placeholder-gray-500 focus:outline-none focus:border-black transition-colors"
+                    className="w-full p-2 sm:p-3 rounded-lg bg-gray-100 border border-gray-200 text-black placeholder-gray-500 focus:outline-none focus:border-black transition-colors text-sm sm:text-base"
                     suppressHydrationWarning
                   />
                 </div>
@@ -248,7 +290,7 @@ export default function ProfilePage() {
                   <input
                     type="text"
                     placeholder="Last Name"
-                    className="w-full p-3 rounded-lg bg-gray-100 border border-gray-200 text-black placeholder-gray-500 focus:outline-none focus:border-black transition-colors"
+                    className="w-full p-2 sm:p-3 rounded-lg bg-gray-100 border border-gray-200 text-black placeholder-gray-500 focus:outline-none focus:border-black transition-colors text-sm sm:text-base"
                     suppressHydrationWarning
                   />
                 </div>
@@ -256,21 +298,21 @@ export default function ProfilePage() {
             </section>
 
             {/* Preferences Section */}
-            <section id="preferences" className="mb-16">
-              <div className="flex items-center gap-2 mb-6">
-                <h2 className="text-2xl font-bold text-black">Preferences</h2>
+            <section id="preferences" className="mb-8 sm:mb-16">
+              <div className="flex items-center gap-2 mb-4 sm:mb-6">
+                <h2 className="text-xl sm:text-2xl font-bold text-black">Preferences</h2>
                 <Image
                   src="/images/Preferences.png"
                   alt="Preferences"
-                  width={32}
-                  height={32}
+                  width={24}
+                  height={24}
                   className=""
                   priority
                 />
               </div>
-              <div className="space-y-4">
-                <div className="flex items-center justify-between p-4 bg-gray-100 rounded-lg">
-                  <span className="text-black">Email Notifications</span>
+              <div className="space-y-3 sm:space-y-4">
+                <div className="flex items-center justify-between p-3 sm:p-4 bg-gray-100 rounded-lg">
+                  <span className="text-sm sm:text-base text-black">Email Notifications</span>
                   <label className="relative inline-flex items-center cursor-pointer">
                     <input 
                       type="checkbox" 
@@ -279,7 +321,7 @@ export default function ProfilePage() {
                       onChange={(e) => setEmailNotifications(e.target.checked)}
                       suppressHydrationWarning 
                     />
-                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-black/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-black"></div>
+                    <div className="w-9 h-5 sm:w-11 sm:h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-black/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 sm:after:h-5 sm:after:w-5 after:transition-all peer-checked:bg-black"></div>
                   </label>
                 </div>
                 {emailNotifications && (
@@ -291,7 +333,7 @@ export default function ProfilePage() {
                           placeholder="Enter your email address"
                           value={email}
                           onChange={handleEmailChange}
-                          className={`w-full p-3 rounded-lg border text-black transition-all duration-300 ${
+                          className={`w-full p-2 sm:p-3 rounded-lg border text-black transition-all duration-300 text-sm sm:text-base ${
                             isEmailValid 
                               ? 'bg-white border-green-500 focus:border-green-500 shadow-[0_0_0_1px_rgba(34,197,94,0.2)]' 
                               : 'bg-gray-100 border-gray-200 focus:border-black'
@@ -299,8 +341,8 @@ export default function ProfilePage() {
                           suppressHydrationWarning
                         />
                         {isEmailValid && (
-                          <div className="absolute right-3 top-1/2 -translate-y-1/2 text-green-500 animate-fade-in">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                          <div className="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 text-green-500 animate-fade-in">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 sm:h-5 sm:w-5" viewBox="0 0 20 20" fill="currentColor">
                               <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                             </svg>
                           </div>
@@ -312,21 +354,21 @@ export default function ProfilePage() {
                             setEmail('');
                             setIsEmailValid(false);
                           }}
-                          className="text-red-500 hover:text-red-600 transition-colors p-2 hover:bg-red-50 rounded-lg"
+                          className="text-red-500 hover:text-red-600 transition-colors p-1.5 sm:p-2 hover:bg-red-50 rounded-lg"
                         >
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 sm:h-5 sm:w-5" viewBox="0 0 20 20" fill="currentColor">
                             <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
                           </svg>
                         </button>
                       )}
                     </div>
                     {email && !isEmailValid && (
-                      <p className="text-sm text-red-500 mt-1">Please enter a valid email address</p>
+                      <p className="text-xs sm:text-sm text-red-500 mt-1">Please enter a valid email address</p>
                     )}
                   </div>
                 )}
-                <div className="flex items-center justify-between p-4 bg-gray-100 rounded-lg">
-                  <span className="text-black">SMS Notifications</span>
+                <div className="flex items-center justify-between p-3 sm:p-4 bg-gray-100 rounded-lg">
+                  <span className="text-sm sm:text-base text-black">SMS Notifications</span>
                   <label className="relative inline-flex items-center cursor-pointer">
                     <input 
                       type="checkbox" 
@@ -335,7 +377,7 @@ export default function ProfilePage() {
                       onChange={(e) => setSmsNotifications(e.target.checked)}
                       suppressHydrationWarning 
                     />
-                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-black/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-black"></div>
+                    <div className="w-9 h-5 sm:w-11 sm:h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-black/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 sm:after:h-5 sm:after:w-5 after:transition-all peer-checked:bg-black"></div>
                   </label>
                 </div>
                 {smsNotifications && (
@@ -349,7 +391,7 @@ export default function ProfilePage() {
                           onChange={handlePhoneNumberChange}
                           maxLength={14}
                           pattern="\(\d{3}\)\d{3}-\d{4}"
-                          className={`w-full p-3 rounded-lg border text-black transition-all duration-300 ${
+                          className={`w-full p-2 sm:p-3 rounded-lg border text-black transition-all duration-300 text-sm sm:text-base ${
                             isPhoneValid 
                               ? 'bg-white border-green-500 focus:border-green-500 shadow-[0_0_0_1px_rgba(34,197,94,0.2)]' 
                               : 'bg-gray-100 border-gray-200 focus:border-black'
@@ -357,8 +399,8 @@ export default function ProfilePage() {
                           suppressHydrationWarning
                         />
                         {isPhoneValid && (
-                          <div className="absolute right-3 top-1/2 -translate-y-1/2 text-green-500 animate-fade-in">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                          <div className="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 text-green-500 animate-fade-in">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 sm:h-5 sm:w-5" viewBox="0 0 20 20" fill="currentColor">
                               <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                             </svg>
                           </div>
@@ -370,22 +412,22 @@ export default function ProfilePage() {
                             setPhoneNumber('');
                             setIsPhoneValid(false);
                           }}
-                          className="text-red-500 hover:text-red-600 transition-colors p-2 hover:bg-red-50 rounded-lg"
+                          className="text-red-500 hover:text-red-600 transition-colors p-1.5 sm:p-2 hover:bg-red-50 rounded-lg"
                         >
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 sm:h-5 sm:w-5" viewBox="0 0 20 20" fill="currentColor">
                             <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
                           </svg>
                         </button>
                       )}
                     </div>
                     {phoneNumber && !isPhoneValid && (
-                      <p className="text-sm text-red-500 mt-1">Please enter a complete phone number</p>
+                      <p className="text-xs sm:text-sm text-red-500 mt-1">Please enter a complete phone number</p>
                     )}
                   </div>
                 )}
-                <div className="flex items-center justify-between p-4 bg-gray-100 rounded-lg">
-                  <span className="text-black">Shirt Size</span>
-                  <select className="bg-white border border-gray-300 rounded-lg px-3 py-2 text-black focus:outline-none focus:border-black" suppressHydrationWarning>
+                <div className="flex items-center justify-between p-3 sm:p-4 bg-gray-100 rounded-lg">
+                  <span className="text-sm sm:text-base text-black">Shirt Size</span>
+                  <select className="bg-white border border-gray-300 rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 text-black focus:outline-none focus:border-black text-sm sm:text-base" suppressHydrationWarning>
                     <option value="xs">XS</option>
                     <option value="s">S</option>
                     <option value="m">M</option>
@@ -399,52 +441,62 @@ export default function ProfilePage() {
             </section>
 
             {/* Shipping Address Section */}
-            <section id="shipping" className="mb-16">
-              <div className="flex items-center gap-2 mb-6">
-                <h2 className="text-2xl font-bold text-black">Shipping Address</h2>
+            <section id="shipping" className="mb-8 sm:mb-16">
+              <div className="flex items-center gap-2 mb-4 sm:mb-6">
+                <h2 className="text-xl sm:text-2xl font-bold text-black">Shipping Address</h2>
                 <Image
                   src="/images/Shipping.png"
                   alt="Shipping"
-                  width={32}
-                  height={32}
+                  width={24}
+                  height={24}
                   className=""
                   priority
                 />
               </div>
-              <div className="space-y-4">
+              <div className="space-y-3 sm:space-y-4">
                 <div>
                   <input
                     type="text"
                     placeholder="Street Address"
-                    className="w-full p-3 rounded-lg bg-gray-100 border border-gray-200 text-black placeholder-gray-500 focus:outline-none focus:border-black transition-colors"
+                    className="w-full p-2 sm:p-3 rounded-lg bg-gray-100 border border-gray-200 text-black placeholder-gray-500 focus:outline-none focus:border-black transition-colors text-sm sm:text-base"
+                    value={shippingAddress.street}
+                    onChange={(e) => handleShippingAddressChange('street', e.target.value)}
                     suppressHydrationWarning
                   />
                 </div>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                   <input
                     type="text"
                     placeholder="City"
-                    className="w-full p-3 rounded-lg bg-gray-100 border border-gray-200 text-black placeholder-gray-500 focus:outline-none focus:border-black transition-colors"
+                    className="w-full p-2 sm:p-3 rounded-lg bg-gray-100 border border-gray-200 text-black placeholder-gray-500 focus:outline-none focus:border-black transition-colors text-sm sm:text-base"
+                    value={shippingAddress.city}
+                    onChange={(e) => handleShippingAddressChange('city', e.target.value)}
                     suppressHydrationWarning
                   />
                   <input
                     type="text"
                     placeholder="State"
-                    className="w-full p-3 rounded-lg bg-gray-100 border border-gray-200 text-black placeholder-gray-500 focus:outline-none focus:border-black transition-colors"
+                    className="w-full p-2 sm:p-3 rounded-lg bg-gray-100 border border-gray-200 text-black placeholder-gray-500 focus:outline-none focus:border-black transition-colors text-sm sm:text-base"
+                    value={shippingAddress.state}
+                    onChange={(e) => handleShippingAddressChange('state', e.target.value)}
                     suppressHydrationWarning
                   />
                 </div>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                   <input
                     type="text"
                     placeholder="ZIP Code"
-                    className="w-full p-3 rounded-lg bg-gray-100 border border-gray-200 text-black placeholder-gray-500 focus:outline-none focus:border-black transition-colors"
+                    className="w-full p-2 sm:p-3 rounded-lg bg-gray-100 border border-gray-200 text-black placeholder-gray-500 focus:outline-none focus:border-black transition-colors text-sm sm:text-base"
+                    value={shippingAddress.zip}
+                    onChange={(e) => handleShippingAddressChange('zip', e.target.value)}
                     suppressHydrationWarning
                   />
                   <input
                     type="text"
                     placeholder="Country"
-                    className="w-full p-3 rounded-lg bg-gray-100 border border-gray-200 text-black placeholder-gray-500 focus:outline-none focus:border-black transition-colors"
+                    className="w-full p-2 sm:p-3 rounded-lg bg-gray-100 border border-gray-200 text-black placeholder-gray-500 focus:outline-none focus:border-black transition-colors text-sm sm:text-base"
+                    value={shippingAddress.country}
+                    onChange={(e) => handleShippingAddressChange('country', e.target.value)}
                     suppressHydrationWarning
                   />
                 </div>
@@ -452,33 +504,86 @@ export default function ProfilePage() {
             </section>
 
             {/* Payment Methods Section */}
-            <section id="payment" className="mb-16">
-              <div className="flex items-center gap-2 mb-6">
-                <h2 className="text-2xl font-bold text-black">Payment Methods</h2>
+            <section id="payment" className="mb-8 sm:mb-16">
+              <div className="flex items-center gap-2 mb-4 sm:mb-6">
+                <h2 className="text-xl sm:text-2xl font-bold text-black">Payment Methods</h2>
                 <Image
                   src="/images/Credit_Card.png"
                   alt="Credit Card"
-                  width={32}
-                  height={32}
+                  width={24}
+                  height={24}
                   className=""
                   priority
                 />
               </div>
-              <div className="space-y-4">
-                <div className="p-4 bg-gray-100 rounded-lg">
-                  <div className="flex items-center justify-between mb-4">
-                    <span className="text-black font-medium">Credit Card</span>
-                    <button className="text-black hover:text-gray-600" suppressHydrationWarning>Edit</button>
+              <div className="space-y-3 sm:space-y-4">
+                <div className="p-3 sm:p-4 bg-gray-100 rounded-lg">
+                  <div className="flex items-center justify-between mb-3 sm:mb-4">
+                    <span className="text-sm sm:text-base text-black font-medium">Credit Card</span>
+                    <button className="text-sm sm:text-base text-black hover:text-gray-600" suppressHydrationWarning>Edit</button>
                   </div>
-                  <div className="text-black">•••• •••• •••• 1234</div>
+                  <div className="text-sm sm:text-base text-black">•••• •••• •••• 1234</div>
                 </div>
-                <button className="w-full py-3 px-6 rounded-lg bg-black text-white font-semibold hover:bg-gray-800 transition-colors" suppressHydrationWarning>
+                <button 
+                  onClick={handlePaymentCardAdded}
+                  className="w-full py-2 sm:py-3 px-4 sm:px-6 rounded-lg bg-black text-white font-semibold hover:bg-gray-800 transition-colors text-sm sm:text-base" 
+                  suppressHydrationWarning
+                >
                   Add Payment Method
                 </button>
               </div>
             </section>
           </div>
         </div>
+
+        {/* Modal */}
+        {showModal && (
+          <div className="fixed inset-0 z-40 flex items-center justify-center p-8">
+            <div 
+              className="absolute inset-0 bg-black/30 backdrop-blur-sm" 
+              onClick={() => setShowModal(false)}
+              suppressHydrationWarning
+            ></div>
+            <div className="relative w-full max-w-5xl bg-white rounded-lg overflow-hidden shadow-xl">
+              <div className="relative w-full" style={{ paddingBottom: '50%' }}>
+                <img
+                  src={modalPage === 1 ? "/images/Preferences_Modal.svg" : "/images/Shipping_Modal.svg"}
+                  alt={modalPage === 1 ? "Preferences Modal" : "Shipping Modal"}
+                  className="absolute inset-0 w-full h-full"
+                  key={modalPage}
+                />
+              </div>
+
+              <div className="absolute bottom-0 left-0 right-0 p-6">
+                <div className="flex justify-between items-center">
+                  <div className="flex gap-2">
+                    <div 
+                      className={`w-2 h-2 rounded-full ${modalPage === 1 ? 'bg-black' : 'bg-gray-300'}`}
+                      suppressHydrationWarning
+                    ></div>
+                    <div 
+                      className={`w-2 h-2 rounded-full ${modalPage === 2 ? 'bg-black' : 'bg-gray-300'}`}
+                      suppressHydrationWarning
+                    ></div>
+                  </div>
+                  <button
+                    onClick={() => {
+                      if (modalPage === 1) {
+                        setModalPage(2);
+                      } else {
+                        setShowModal(false);
+                      }
+                    }}
+                    className="px-6 py-3 bg-[#9333EA] text-white rounded-lg font-medium hover:bg-[#6B21A8] transition-colors"
+                    suppressHydrationWarning
+                  >
+                    {modalPage === 1 ? 'Next' : 'Got it'}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
