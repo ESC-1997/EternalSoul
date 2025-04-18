@@ -604,24 +604,24 @@ export default function ProfilePage() {
               className="absolute inset-0 bg-black/30 backdrop-blur-sm" 
               onClick={() => setShowModal(false)}
             ></div>
-            <div className="relative w-full h-full max-w-md max-h-[80vh] mx-auto my-auto bg-white">
+            <div className="relative w-[90%] h-[70vh] max-w-sm mx-auto my-auto bg-white rounded-lg">
               <div className="relative w-full h-full">
                 <img
                   src={modalPage === 1 ? "/images/Mobile_Modal1.svg" : "/images/Mobile_Modal2.svg"}
                   alt={modalPage === 1 ? "Mobile Preferences Modal" : "Mobile Shipping Modal"}
-                  className="w-full h-full object-contain"
+                  className="w-full h-full object-contain p-2"
                   key={modalPage}
                 />
               </div>
 
-              <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/50 to-transparent">
+              <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/50 to-transparent">
                 <div className="flex justify-between items-center">
-                  <div className="flex gap-1.5">
+                  <div className="flex gap-1">
                     <div 
-                      className={`w-1.5 h-1.5 rounded-full ${modalPage === 1 ? 'bg-white' : 'bg-white/50'}`}
+                      className={`w-1 h-1 rounded-full ${modalPage === 1 ? 'bg-white' : 'bg-white/50'}`}
                     ></div>
                     <div 
-                      className={`w-1.5 h-1.5 rounded-full ${modalPage === 2 ? 'bg-white' : 'bg-white/50'}`}
+                      className={`w-1 h-1 rounded-full ${modalPage === 2 ? 'bg-white' : 'bg-white/50'}`}
                     ></div>
                   </div>
                   <button
@@ -632,7 +632,7 @@ export default function ProfilePage() {
                         setShowModal(false);
                       }
                     }}
-                    className="px-4 py-2 bg-[#9333EA] text-white rounded-lg font-medium hover:bg-[#6B21A8] transition-colors text-sm"
+                    className="px-3 py-1.5 bg-[#9333EA] text-white rounded-lg font-medium hover:bg-[#6B21A8] transition-colors text-sm"
                   >
                     {modalPage === 1 ? 'Next' : 'Got it'}
                   </button>
