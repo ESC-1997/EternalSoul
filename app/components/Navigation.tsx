@@ -7,13 +7,17 @@ import { useState } from "react";
 export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  const toggleMenu = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent event from bubbling up
+    setIsMenuOpen(!isMenuOpen);
+  };
+
   return (
     <>
       {/* Mobile Menu Button */}
       <button
-        onClick={() => setIsMenuOpen(!isMenuOpen)}
-        className="fixed top-4 left-4 z-50 p-2 rounded-lg bg-black/50 backdrop-blur-sm sm:hidden"
-        suppressHydrationWarning
+        onClick={toggleMenu}
+        className="fixed top-4 left-4 z-[100] p-2 rounded-lg bg-black/50 backdrop-blur-sm sm:hidden"
       >
         <div className="w-6 h-0.5 bg-white mb-1.5"></div>
         <div className="w-6 h-0.5 bg-white mb-1.5"></div>
@@ -21,9 +25,12 @@ export default function Navigation() {
       </button>
 
       {/* Left Navigation Menu */}
-      <div className={`fixed left-0 top-0 h-screen w-20 bg-black/50 backdrop-blur-sm transition-transform duration-300 ease-in-out ${
-        isMenuOpen ? 'translate-x-0' : '-translate-x-full sm:translate-x-0'
-      }`}>
+      <div 
+        className={`fixed left-0 top-0 h-screen w-20 bg-black/50 backdrop-blur-sm transition-transform duration-300 ease-in-out z-[90] ${
+          isMenuOpen ? 'translate-x-0' : '-translate-x-full sm:translate-x-0'
+        }`}
+        onClick={(e) => e.stopPropagation()} // Prevent clicks from closing modals
+      >
         <div className="flex flex-col h-full p-4">
           {/* Logo */}
           <div className="mb-2 flex flex-col items-center justify-center">
@@ -86,6 +93,14 @@ export default function Navigation() {
           </div>
         </div>
       </div>
+
+      {/* Overlay to close menu on mobile */}
+      {isMenuOpen && (
+        <div
+          className="fixed inset-0 bg-black/20 z-[80] sm:hidden"
+          onClick={toggleMenu}
+        ></div>
+      )}
     </>
   );
 } 
