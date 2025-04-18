@@ -210,40 +210,36 @@ export default function ProfilePage() {
           {/* Sub Navigation */}
           <div className="sticky top-0 bg-white border-b border-gray-200 z-10">
             <div className="max-w-4xl mx-auto px-2 sm:px-4 py-2 sm:py-4">
-              <div className="flex gap-2 sm:gap-4 overflow-x-auto">
+              <div className="flex gap-2 sm:gap-4 overflow-x-auto pl-16 sm:pl-0 justify-end sm:justify-start">
                 <button
                   onClick={() => scrollToSection('name')}
-                  className={`px-2 sm:px-4 py-2 rounded-lg transition-colors text-sm sm:text-base ${
+                  className={`px-2 sm:px-4 py-2 rounded-lg transition-colors text-sm sm:text-base whitespace-nowrap ${
                     activeSection === 'name' ? 'bg-black text-white' : 'text-black hover:bg-gray-100'
                   }`}
-                  suppressHydrationWarning
                 >
                   Name
                 </button>
                 <button
                   onClick={() => scrollToSection('preferences')}
-                  className={`px-2 sm:px-4 py-2 rounded-lg transition-colors text-sm sm:text-base ${
+                  className={`px-2 sm:px-4 py-2 rounded-lg transition-colors text-sm sm:text-base whitespace-nowrap ${
                     activeSection === 'preferences' ? 'bg-black text-white' : 'text-black hover:bg-gray-100'
                   }`}
-                  suppressHydrationWarning
                 >
                   Preferences
                 </button>
                 <button
                   onClick={() => scrollToSection('shipping')}
-                  className={`px-2 sm:px-4 py-2 rounded-lg transition-colors text-sm sm:text-base ${
+                  className={`px-2 sm:px-4 py-2 rounded-lg transition-colors text-sm sm:text-base whitespace-nowrap ${
                     activeSection === 'shipping' ? 'bg-black text-white' : 'text-black hover:bg-gray-100'
                   }`}
-                  suppressHydrationWarning
                 >
                   Shipping
                 </button>
                 <button
                   onClick={() => scrollToSection('payment')}
-                  className={`px-2 sm:px-4 py-2 rounded-lg transition-colors text-sm sm:text-base ${
+                  className={`px-2 sm:px-4 py-2 rounded-lg transition-colors text-sm sm:text-base whitespace-nowrap ${
                     activeSection === 'payment' ? 'bg-black text-white' : 'text-black hover:bg-gray-100'
                   }`}
-                  suppressHydrationWarning
                 >
                   Payment
                 </button>
