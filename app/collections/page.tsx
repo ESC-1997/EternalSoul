@@ -1,95 +1,21 @@
 'use client';
 
 import Image from "next/image";
-import Link from "next/link";
+import Navigation from "../components/Navigation";
+import { useState } from "react";
 
 export default function CollectionsPage() {
-  // Modal is always shown and can't be closed
-  const showModal = true;
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const showModal = true; // Modal is always shown and can't be closed
 
   return (
     <div className="min-h-screen flex">
-      {/* Left Navigation Menu */}
-      <div className="fixed left-0 top-0 h-screen w-20 bg-black/50 backdrop-blur-sm">
-        <div className="flex flex-col h-full p-4">
-          {/* Logo */}
-          <div className="mb-2 flex flex-col items-center justify-center">
-            <Link href="/" className="block">
-              <Image
-                src="/images/logo.png"
-                alt="Eternal Soul Logo"
-                width={60}
-                height={60}
-                className="invert transform hover:invert-0 transition-all duration-300"
-                style={{ width: 'auto', height: 'auto' }}
-              />
-            </Link>
-            <span className="text-xs text-white mt-2">Home</span>
-          </div>
-
-          {/* Navigation Links */}
-          <div className="flex flex-col gap-4 mt-4">
-            <Link 
-              href="/about"
-              className="flex flex-col items-center gap-1 text-white p-3 hover:bg-white/10 rounded-lg transition-colors"
-            >
-              <Image
-                src="/images/Glasses.png"
-                alt="About"
-                width={24}
-                height={24}
-                className="invert brightness-0"
-              />
-              <span className="text-xs">About</span>
-            </Link>
-
-            <Link 
-              href="/contact"
-              className="flex flex-col items-center gap-1 text-white p-3 hover:bg-white/10 rounded-lg transition-colors"
-            >
-              <Image
-                src="/images/Email.png"
-                alt="Contact"
-                width={24}
-                height={24}
-                className="invert brightness-0"
-              />
-              <span className="text-xs">Contact</span>
-            </Link>
-
-            <Link 
-              href="/collections"
-              className="flex flex-col items-center gap-1 text-white p-3 hover:bg-white/10 rounded-lg transition-colors"
-            >
-              <Image
-                src="/images/T_Shirt.png"
-                alt="Collections"
-                width={24}
-                height={24}
-                className="invert brightness-0"
-              />
-              <span className="text-xs">Collections</span>
-            </Link>
-
-            <Link 
-              href="/profile"
-              className="flex flex-col items-center gap-1 text-white p-3 hover:bg-white/10 rounded-lg transition-colors"
-            >
-              <Image
-                src="/images/Profile.png"
-                alt="Profile"
-                width={24}
-                height={24}
-                className="invert brightness-0"
-              />
-              <span className="text-xs">Profile</span>
-            </Link>
-          </div>
-        </div>
-      </div>
+      <Navigation />
 
       {/* Main Content */}
-      <div className="flex-1 ml-20">
+      <div className={`flex-1 transition-all duration-300 ${
+        isMenuOpen ? 'ml-20' : 'ml-0 sm:ml-20'
+      }`}>
         <div className="min-h-screen relative">
           <div className="absolute inset-0 overflow-hidden">
             <Image
