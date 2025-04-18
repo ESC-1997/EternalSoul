@@ -614,7 +614,7 @@ export default function ProfilePage() {
                 />
               </div>
 
-              <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/50 to-transparent">
+              <div className="absolute bottom-0 left-0 right-0 p-3 bg-black/30 backdrop-blur-sm">
                 <div className="flex justify-between items-center">
                   <div className="flex gap-1">
                     <div 
