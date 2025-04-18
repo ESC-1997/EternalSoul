@@ -604,12 +604,13 @@ export default function ProfilePage() {
               className="absolute inset-0 bg-black/30 backdrop-blur-sm" 
               onClick={() => setShowModal(false)}
             ></div>
-            <div className="relative w-[90%] h-[70vh] max-w-sm mx-auto my-auto bg-white rounded-lg">
-              <div className="relative w-full h-full">
+            <div className="relative w-[90%] h-[70vh] max-w-sm mx-auto my-auto bg-white rounded-lg overflow-hidden">
+              <div className="relative w-full h-full flex items-center justify-center">
                 <img
                   src={modalPage === 1 ? "/images/Mobile_Modal1.svg" : "/images/Mobile_Modal2.svg"}
                   alt={modalPage === 1 ? "Mobile Preferences Modal" : "Mobile Shipping Modal"}
-                  className="w-full h-full object-contain p-2"
+                  className="w-full h-full"
+                  style={{ objectFit: 'cover' }}
                   key={modalPage}
                 />
               </div>
