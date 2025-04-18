@@ -160,16 +160,6 @@ export default function ProfilePage() {
               href="/about"
               className="flex flex-col items-center gap-1 text-white p-3 hover:bg-white/10 rounded-lg transition-colors"
             >
-              <Image
-                src="/images/Glasses.png"
-                alt="About"
-                width={24}
-                height={24}
-                className="invert brightness-0"
-              />
-              <span className="text-xs">About</span>
-            </Link>
-
             <Link 
               href="/contact"
               className="flex flex-col items-center gap-1 text-white p-3 hover:bg-white/10 rounded-lg transition-colors"
