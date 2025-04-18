@@ -8,7 +8,7 @@ export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = (e: React.MouseEvent) => {
-    e.stopPropagation(); // Prevent event from bubbling up
+    e.stopPropagation();
     setIsMenuOpen(!isMenuOpen);
   };
 
@@ -29,9 +29,9 @@ export default function Navigation() {
         className={`fixed left-0 top-0 h-screen w-20 bg-black/50 backdrop-blur-sm transition-transform duration-300 ease-in-out z-[90] ${
           isMenuOpen ? 'translate-x-0' : '-translate-x-full sm:translate-x-0'
         }`}
-        onClick={(e) => e.stopPropagation()} // Prevent clicks from closing modals
+        onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex flex-col h-full p-4">
+        <div className="flex flex-col h-full p-4 pt-16 sm:pt-4">
           {/* Logo */}
           <div className="mb-2 flex flex-col items-center justify-center">
             <Link href="/" className="block">
