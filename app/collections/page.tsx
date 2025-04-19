@@ -2,38 +2,14 @@
 
 import Image from "next/image";
 import Navigation from "../components/Navigation";
-import { useState, useEffect } from "react";
 
 export default function CollectionsPage() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-  const showModal = true; // Modal is always shown and can't be closed
-
-  // Add window resize listener for mobile detection
-  useEffect(() => {
-    const checkMobile = () => {
-      const isMobileSize = window.innerWidth < 640 || window.innerHeight < 640;
-      setIsMobile(isMobileSize);
-    };
-
-    // Check initially
-    checkMobile();
-
-    // Add resize listener
-    window.addEventListener('resize', checkMobile);
-
-    // Cleanup
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
   return (
     <div className="min-h-screen flex">
       <Navigation />
 
       {/* Main Content */}
-      <div className={`flex-1 transition-all duration-300 ${
-        isMenuOpen ? 'ml-20' : 'ml-0 sm:ml-20'
-      }`}>
+      <div className="flex-1 sm:ml-20">
         <div className="min-h-screen relative overflow-y-auto">
           <div className="absolute inset-0 overflow-hidden">
             <Image
