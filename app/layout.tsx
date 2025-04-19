@@ -1,38 +1,25 @@
 import './globals.css'
-import { Metadata } from 'next'
+import { Corben, Playfair_Display, Inter } from 'next/font/google'
 
-export const metadata: Metadata = {
-  title: 'Eternal Soul Clothing',
-  description: 'Eternal Soul Clothing - A tribute to the enduring energy within each of us',
-  metadataBase: new URL('https://eternalsoul.co'),
-  manifest: '/manifest.json',
-  openGraph: {
-    type: 'website',
-    title: 'Eternal Soul Clothing',
-    description: 'Eternal Soul Clothing - A tribute to the enduring energy within each of us',
-    siteName: 'Eternal Soul Clothing',
-    url: 'https://eternalsoul.co',
-    images: [
-      {
-        url: 'https://eternalsoul.co/images/ES Slide Grey.png',
-        width: 1200,
-        height: 630,
-        alt: 'Eternal Soul Clothing Logo'
-      }
-    ]
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Eternal Soul Clothing',
-    description: 'Eternal Soul Clothing - A tribute to the enduring energy within each of us',
-    images: ['https://eternalsoul.co/images/ES Slide Grey.png'],
-    creator: '@eternalsoulco'
-  },
-  icons: {
-    icon: '/images/ES Slide Grey.png',
-    apple: '/images/ES Slide Grey.png',
-  }
-}
+const corben = Corben({
+  weight: ['400', '700'],
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-corben',
+})
+
+const playfair = Playfair_Display({
+  weight: ['400', '700'],
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-playfair',
+})
+
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-inter',
+})
 
 export default function RootLayout({
   children,
@@ -41,14 +28,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <head>
-        <link rel="icon" href="/images/ES Slide Grey.png" />
-        <link rel="apple-touch-icon" href="/images/ES Slide Grey.png" />
-        <link rel="manifest" href="/manifest.json" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-        <meta name="theme-color" content="#6B21A8" />
-      </head>
-      <body>{children}</body>
+      <body className={`${corben.variable} ${playfair.variable} ${inter.variable} font-sans`}>{children}</body>
     </html>
   )
 }
