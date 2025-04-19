@@ -17,9 +17,13 @@ export default function Home() {
     return () => clearTimeout(timer);
   }, []);
 
+  const handleProfileClick = () => {
+    setShowModal(false);
+  };
+
   return (
     <div className="min-h-screen flex">
-      <Navigation />
+      <Navigation onProfileClick={handleProfileClick} />
 
       {/* Main Content */}
       <div className={`flex-1 transition-all duration-300 ${
