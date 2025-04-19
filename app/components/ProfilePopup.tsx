@@ -216,6 +216,19 @@ export default function ProfilePopup({ isOpen, onClose }: { isOpen: boolean; onC
         }
       }
 
+      // For login (not signup), try to find existing profile data by email or phone
+      if (!isSignUp && existingLoginData) {
+        const allProfiles = JSON.parse(existingLoginData);
+        // If logging in with email, look for matching email
+        if (isLoginEmailValid && allProfiles.email === loginEmail) {
+          existingProfile = allProfiles.profile;
+        }
+        // If logging in with phone, look for matching phone
+        if (isLoginPhoneValid && allProfiles.phone === loginPhone) {
+          existingProfile = allProfiles.profile;
+        }
+      }
+
       const loginData = {
         email: loginEmail,
         phone: loginPhone,
@@ -223,7 +236,9 @@ export default function ProfilePopup({ isOpen, onClose }: { isOpen: boolean; onC
         profile: {
           ...existingProfile,
           email: isLoginEmailValid ? loginEmail : existingProfile.email,
-          phoneNumber: isLoginPhoneValid ? loginPhone : existingProfile.phoneNumber
+          phoneNumber: isLoginPhoneValid ? loginPhone : existingProfile.phoneNumber,
+          emailNotifications: existingProfile.emailNotifications || false,
+          smsNotifications: existingProfile.smsNotifications || false
         }
       };
       
