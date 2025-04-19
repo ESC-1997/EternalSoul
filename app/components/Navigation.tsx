@@ -2,14 +2,37 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import ProfilePopup from './ProfilePopup';
 
-export default function Navigation() {
+interface NavigationProps {
+  onProfileClick?: () => void;
+}
+
+export default function Navigation({ onProfileClick }: NavigationProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+
+  useEffect(() => {
+    // Set initial menu state based on screen size
+    const checkMobile = () => {
+      const isMobileSize = window.innerWidth < 640;
+      setIsMenuOpen(!isMobileSize);
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const toggleMenu = (e: React.MouseEvent) => {
     e.stopPropagation();
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  const handleProfileClick = () => {
+    setIsProfileOpen(true);
+    onProfileClick?.();
   };
 
   return (
@@ -18,6 +41,7 @@ export default function Navigation() {
       <button
         onClick={toggleMenu}
         className="fixed top-4 left-4 z-[100] p-2 rounded-lg bg-black/50 backdrop-blur-sm sm:hidden"
+        aria-label="Toggle menu"
       >
         <div className="w-6 h-0.5 bg-white mb-1.5"></div>
         <div className="w-6 h-0.5 bg-white mb-1.5"></div>
@@ -77,8 +101,8 @@ export default function Navigation() {
               <span className="text-xs">Collections</span>
             </Link>
 
-            <Link 
-              href="/profile"
+            <button
+              onClick={handleProfileClick}
               className="flex flex-col items-center gap-1 text-white p-3 hover:bg-white/10 rounded-lg transition-colors"
             >
               <Image
@@ -89,7 +113,7 @@ export default function Navigation() {
                 className="invert brightness-0"
               />
               <span className="text-xs">Profile</span>
-            </Link>
+            </button>
           </div>
         </div>
       </div>
@@ -101,6 +125,8 @@ export default function Navigation() {
           onClick={toggleMenu}
         ></div>
       )}
+
+      <ProfilePopup isOpen={isProfileOpen} onClose={() => setIsProfileOpen(false)} />
     </>
   );
 } 
