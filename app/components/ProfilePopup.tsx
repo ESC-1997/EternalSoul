@@ -157,36 +157,44 @@ export default function ProfilePopup({ isOpen, onClose }: { isOpen: boolean; onC
     if ((isLoginEmailValid || isLoginPhoneValid) && isPasswordValid()) {
       // In a real app, this would be an API call
       localStorage.setItem('authState', 'true');
+      
+      // Get existing login data if it exists
+      const existingLoginData = localStorage.getItem('loginData');
+      let existingProfile = {
+        firstName: '',
+        lastName: '',
+        email: '',
+        phoneNumber: '',
+        emailNotifications: false,
+        smsNotifications: false,
+        shirtSize: 'm'
+      };
+
+      if (existingLoginData) {
+        const parsedData = JSON.parse(existingLoginData);
+        if (parsedData.profile) {
+          existingProfile = parsedData.profile;
+        }
+      }
+
       const loginData = {
         email: loginEmail,
         phone: loginPhone,
         password: password, // Note: In a real app, this should be hashed
         profile: {
-          firstName: '',
-          lastName: '',
-          email: loginEmail,
-          phoneNumber: loginPhone,
-          emailNotifications: false,
-          smsNotifications: false,
-          shirtSize: 'm'
+          ...existingProfile,
+          email: isLoginEmailValid ? loginEmail : existingProfile.email,
+          phoneNumber: isLoginPhoneValid ? loginPhone : existingProfile.phoneNumber
         }
       };
+      
       localStorage.setItem('loginData', JSON.stringify(loginData));
       setIsLoggedIn(true);
       setShowLoginForm(false);
       setActiveSection('name');
       
-      // If user logged in with email, pre-populate email field
-      if (isLoginEmailValid) {
-        setEmail(loginEmail);
-        setIsEmailValid(true);
-      }
-      
-      // If user logged in with phone, pre-populate phone field
-      if (isLoginPhoneValid) {
-        setPhoneNumber(loginPhone);
-        setIsPhoneValid(true);
-      }
+      // Load the profile data after login
+      loadProfileData();
     }
   };
 
