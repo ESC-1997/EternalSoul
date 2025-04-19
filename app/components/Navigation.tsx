@@ -32,6 +32,10 @@ export default function Navigation({ onProfileClick }: NavigationProps) {
 
   const handleProfileClick = () => {
     setIsProfileOpen(true);
+    // Close the menu on mobile when profile is clicked
+    if (window.innerWidth < 640) {
+      setIsMenuOpen(false);
+    }
     onProfileClick?.();
   };
 
