@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     siteName: 'Eternal Soul',
     images: [
       {
-        url: 'https://eternalsoul.co/images/eternal_soul_purple.png',
+        url: 'https://eternalsoul.co/images/ES%20Slash%20BG%20Grey.png',
         width: 1200,
         height: 630,
         alt: 'Eternal Soul Logo',
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Eternal Soul Clothing',
     description: 'More than just clothes — we\'re about energy, expression, and wearing your soul on your sleeve. Join our exclusive community for early access.',
-    images: ['https://eternalsoul.co/images/eternal_soul_purple.png'],
+    images: ['https://eternalsoul.co/images/ES%20Slash%20BG%20Grey.png'],
   },
   icons: {
     icon: '/favicon.ico',
