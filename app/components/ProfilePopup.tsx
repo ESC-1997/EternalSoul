@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import { getWelcomeEmailTemplate } from '../utils/emailTemplates';
 
 interface UserProfile {
   firstName: string;
@@ -153,6 +154,44 @@ export default function ProfilePopup({ isOpen, onClose }: { isOpen: boolean; onC
     return Object.values(passwordCriteria).every(criterion => criterion);
   };
 
+  // Add these new functions before handleFormSubmit
+  const sendIntroductoryEmail = async (email: string) => {
+    try {
+      // Get the user's first name from their profile data
+      const loginData = localStorage.getItem('loginData');
+      const firstName = loginData ? JSON.parse(loginData).profile?.firstName : undefined;
+      
+      // Get the email template with personalized greeting
+      const emailHtml = getWelcomeEmailTemplate(firstName);
+      
+      // TODO: Replace with actual email sending logic
+      console.log('Sending introductory email to:', email);
+      console.log('Email content:', emailHtml);
+      // Example of what this might look like:
+      // await sendEmail({
+      //   to: email,
+      //   subject: 'Your Energy Prevails 🧿',
+      //   html: emailHtml
+      // });
+    } catch (error) {
+      console.error('Failed to send introductory email:', error);
+    }
+  };
+
+  const sendIntroductorySMS = async (phoneNumber: string) => {
+    try {
+      // TODO: Replace with actual SMS sending logic
+      console.log('Sending introductory SMS to:', phoneNumber);
+      // Example of what this might look like:
+      // await sendSMS({
+      //   to: phoneNumber,
+      //   message: 'Welcome message content here'
+      // });
+    } catch (error) {
+      console.error('Failed to send introductory SMS:', error);
+    }
+  };
+
   const handleFormSubmit = () => {
     if ((isLoginEmailValid || isLoginPhoneValid) && isPasswordValid()) {
       // In a real app, this would be an API call
@@ -195,6 +234,16 @@ export default function ProfilePopup({ isOpen, onClose }: { isOpen: boolean; onC
       
       // Load the profile data after login
       loadProfileData();
+
+      // Send introductory messages if this is a new signup
+      if (isSignUp) {
+        if (isLoginEmailValid) {
+          sendIntroductoryEmail(loginEmail);
+        }
+        if (isLoginPhoneValid) {
+          sendIntroductorySMS(loginPhone);
+        }
+      }
     }
   };
 
