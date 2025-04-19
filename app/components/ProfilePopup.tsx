@@ -324,7 +324,7 @@ export default function ProfilePopup({ isOpen, onClose }: { isOpen: boolean; onC
                 <div className="flex flex-col items-center">
                   <button
                     onClick={() => setShowLoginForm(false)}
-                    className="fixed top-4 left-16 z-[100] text-white hover:text-gray-300 transition-colors"
+                    className="fixed top-16 left-4 z-[100] text-white hover:text-gray-300 transition-colors"
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
